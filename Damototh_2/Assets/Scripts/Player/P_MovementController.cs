@@ -19,7 +19,6 @@ public class P_MovementController : P_Component
 
     private bool _grounded;
     private bool _askingSprint;
-    private bool _canInputMoveInAnyWay = true;
 
     private float _groundCheckRayDistance;
     private float _velocityMagnitude;
@@ -59,7 +58,7 @@ public class P_MovementController : P_Component
 
     public override void MainFixedUpdate()
     {
-        if (_canInputMoveInAnyWay == true)
+        if (master.CanPerformActions == true)
         {
             if (_grounded == true && master.InputingMovement == true)
             {
@@ -84,6 +83,10 @@ public class P_MovementController : P_Component
     }
     private void RotateVelocitySpace()
     {
+        if (_moveVector.x == 0 && _moveVector.y == 0)
+        {
+            return;
+        }
         pRefs.VelocitySpace.rotation = Quaternion.LookRotation(_moveVector);
     }
     private void ComputeSideBrake()
@@ -191,6 +194,8 @@ public class P_MovementController : P_Component
             }
 
             float hitNormalAngle = (ComputeHitNormalAngle(hits[index], out _groundRayCheckHit));
+            Debug.DrawRay(_groundRayCheckHit.point, _groundRayCheckHit.normal, Color.red, 0.1f);
+
             while (canClimb == false || hitNormalAngle > MData.ClimbMaxAngle)
             {
                 hits.RemoveAt(index);
@@ -257,14 +262,14 @@ public class P_MovementController : P_Component
 
     public override void MainUpdate()
     {
-        if (_canInputMoveInAnyWay == true)
+        if (master.CanPerformActions == true)
         {
             UpdateMovingState();
         }
         UpdateFeetHeightSpeedFactor();
         UpdateCurrentSpeedFactor();
 
-        if (_canInputMoveInAnyWay == true)
+        if (master.CanPerformActions == true)
         {
             ComputeMoveVector();
         }
@@ -380,6 +385,7 @@ public class P_MovementController : P_Component
     {
         if (master.Dodge == true && _movingState != MovingState.Dodging)
         {
+
             master.StartCoroutine(DodgeCoroutine());
         }
     }
@@ -388,24 +394,6 @@ public class P_MovementController : P_Component
         if (master.MoveInputMagntiude < MData.SprintInputThreshold)
         {
             _askingSprint = false;
-        }
-    }
-
-    public override void LateUpdate()
-    {
-        CheckCanMoveInAnyWay();
-    }
-    private void CheckCanMoveInAnyWay()
-    {
-        if (_movingState == MovingState.Dodging ||
-            _movingState == MovingState.VelocityOverriden ||
-            master.AttackController.AttackState != AttackState.None)
-        {
-            _canInputMoveInAnyWay = false;
-        }
-        else
-        {
-            _canInputMoveInAnyWay = true;
         }
     }
 
@@ -444,6 +432,19 @@ public class P_MovementController : P_Component
     }
 
     //Utilities
+    private void ApplyFallDamages()
+    {
+        float damages = Mathf.Clamp(Mathf.Abs(Velocity.y) - MData.FallDamageMinVelocity, 0f, Mathf.Infinity);
+        if (damages <= 0f)
+        {
+            return;
+        }
+
+        damages = Mathf.Pow(damages, MData.FallDamagePower);
+        damages *= MData.FallDamageBase;
+
+        master.OnTakeFallDamages(damages);
+    }
     public void SetBodyShape(float height, float step, float radius)
     {
         pRefs.Collision.radius = radius;
@@ -452,7 +453,10 @@ public class P_MovementController : P_Component
     }
     public float ComputeNormalAngle(Vector3 normal)
     {
-        return Mathf.Abs(Vector3.Angle(Vector3.forward, normal) - 90);
+        float magn = normal.SetY(0).magnitude;
+        Vector3 toCompare = Vector3.forward * magn;
+        toCompare = toCompare.SetY(normal.y);
+        return Mathf.Abs(Vector3.Angle(Vector3.forward, toCompare) -90);
     }
     public float ComputeHitNormalAngle(RaycastHit hit, out RaycastHit rayHit)
     {
@@ -498,16 +502,32 @@ public class P_MovementController : P_Component
         return minHitIndex;
     }
 
+    private void MakeVelocitySpaceLookLockedTarget()
+    {
+        pRefs.VelocitySpace.rotation = master.VisualHandler.TargetQuaternion;
+    }
+
     //Events
     private void OnGroundEnter()
     {
         //Reset & Remove gravity
+        ApplyFallDamages();
+        UpdateFeetHeight();
         Velocity = Velocity.SetY(0);
         pRefs.Rigidbody.useGravity = false;
     }
     private void OnGroundLeave()
     {
         pRefs.Rigidbody.useGravity = true;
+    }
+
+    private void OnStartDodging()
+    {
+        WorldManager.OnPlayerStartDodging();
+    }
+    private void OnEndDodging()
+    {
+        WorldManager.OnPlayerEndDodging();
     }
 
     private void OnFeetHeightChanged(float heightDifference)
@@ -526,6 +546,7 @@ public class P_MovementController : P_Component
     {
         if (isLocalOverride == true)
         {
+            MakeVelocitySpaceLookLockedTarget();
             velocity = pRefs.VelocitySpace.TransformVector(velocity);
         }
 

@@ -879,6 +879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _physicBody: {fileID: 4216520316968246}
   _visualBody: {fileID: 4181903846087226}
+  _beingData: {fileID: 11400000, guid: a4f1b6d3034d685408863e360a2b0ed8, type: 2}
   _inputData: {fileID: 11400000, guid: 3730668d78c52f14e83ebbc31490c38c, type: 2}
   _cameraData: {fileID: 11400000, guid: a460869db62186f4ea67a8281692999b, type: 2}
   _movementData: {fileID: 11400000, guid: dc6ef603e0984bf42b21bddbbaa94fd4, type: 2}
@@ -908,12 +909,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610e147291f910e47adf1e6d6a15719a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Elias
+  _entityName: Elias
   _faction: 0
   e_Grounded: 0
   e_InputingMovement: 0
   e_MovingState: 0
   e_AttackState: 0
+  e_CurrentAttackName: 
 --- !u!114 &114406154495279394
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -18,4 +18,8 @@ MonoBehaviour:
   _xRotTarget: 10
   _unlockRotatingTime: 0.2
   _lockLerpSpeed: 0.15
-  _horizontalOffset: -1.8
+  _horizontalOffset: -1.11
+  _verticalOffset: 1
+  _normalFOV: 50
+  _lockedFOV: 40
+  _fovChangeSpeed: 0.2

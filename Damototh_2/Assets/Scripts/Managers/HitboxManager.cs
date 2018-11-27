@@ -98,9 +98,7 @@ public class HitboxManager : MonoBehaviour
 
     IEnumerator LateDestroy(GameObject o)
     {
-        print("a");
         yield return null;
-        print(o);
         DestroyImmediate(o);
     }
 

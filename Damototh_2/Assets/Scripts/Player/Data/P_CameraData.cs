@@ -15,7 +15,7 @@ public class P_CameraData : ScriptableObject
 
     [Header("Auto Rotation")]
     [Space]
-    [SerializeField, Range(0.05f, 1f)] private float _autoRotLerpSpeed;
+    [SerializeField, Range(0.005f, 1f)] private float _autoRotLerpSpeed;
     [SerializeField] private float _xRotTarget = 10f;
     [SerializeField] private float _unlockRotatingTime = 0.25f;
 
@@ -23,6 +23,13 @@ public class P_CameraData : ScriptableObject
     [Space]
     [SerializeField, Range(0.05f, 1f)] private float _lockLerpSpeed;
     [SerializeField] private float _horizontalOffset = 1f;
+    [SerializeField] private float _verticalOffset = 1f;
+
+    [Header("FOV")]
+    [Space]
+    [SerializeField] private float _normalFOV;
+    [SerializeField] private float _lockedFOV;
+    [SerializeField, Range(0.005f, 1f)] private float _fovChangeSpeed;
 
 
     public float NormalDisplacementFactor { get { return _normalDisplacementFactor; } }
@@ -36,4 +43,10 @@ public class P_CameraData : ScriptableObject
 
     public float LockLerpSpeed { get { return _lockLerpSpeed; } }
     public float HorizontalOffset { get { return _horizontalOffset; } }
+    public float VerticalOffset { get { return _verticalOffset; } }
+
+    public float NormalFOV { get { return _normalFOV; } }
+    public float LockedFOV { get { return _lockedFOV; } }
+    public float FOVChangeSpeed { get { return _fovChangeSpeed; } }
+
 }

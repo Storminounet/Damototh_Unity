@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WorldData", menuName = "WorldData", order = 1000)]
+[CreateAssetMenu(fileName = "WorldData", menuName = "GlobalData/WorldData", order = 1000)]
 public class WorldData : DataSingleton<WorldData>
 {
     [Header("Layers")]

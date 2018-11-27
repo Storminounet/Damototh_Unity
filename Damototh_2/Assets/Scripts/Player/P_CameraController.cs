@@ -8,32 +8,50 @@ public class P_CameraController : P_Component
 
     private bool _autoRotating = false;
     private bool _autoRotatingLock = false;
+    private bool _askingLock = false;
     private bool _locked = false;
     private float _xRot = 0f;
     private float _yRot = 0f;
     private float _autoLookYRot = 0f;
     private float _lockYAngle = 0f;
     private float _lockXAngle = 0f;
+    private float _targetFov = 0f;
+
 
     private Vector3 _toLockedDirection;
 
     private Transform _lockedTransform;
+    private EntityController _lockedEntity;
     private List<Transform> _visibleEnemiesTransforms = new List<Transform>();
     private List<float> _visibleEnemiesXScreenPos = new List<float>();
 
     public bool AutoRotating { get { return _autoRotating; } }
     public bool AutoRotatingLock { get { return _autoRotatingLock; } }
+    public bool AskingLock { get { return _askingLock; } }
     public bool Locked { get { return _locked; } }
 
     public Vector3 ToLockedDirection { get { return _toLockedDirection; } }
 
     public Transform LockedTransform { get { return _lockedTransform; } }
 
+    public override void Awake()
+    {
+        _targetFov = CData.NormalFOV;
+    }
 
     public override void MainUpdate()
     {
-        CheckLock();
-        CheckChangeLockTarget();
+        if (master.CanPerformActions == true)
+        {
+            CheckLock();
+            AskLock();
+            CheckChangeLockTarget();
+
+            if (_autoRotating == false && _locked == false)
+            {
+                CheckAutoRotate();
+            }
+        }
 
         if (_autoRotating == false)
         {
@@ -41,20 +59,32 @@ public class P_CameraController : P_Component
         }
 
         ApplyRotations();
+        ApplyFOV();
     }
 
     private void CheckLock()
     {
-        if (master.Lock == true)
+        if (master.LockDown == true)
         {
             if (_locked == false)
             {
-                Lock();
+                _askingLock = true;
             }
             else
             {
                 Unlock();
             }
+        }
+        else if (master.LockUp == true)
+        {
+            _askingLock = false;
+        }
+    }
+    private void AskLock()
+    {
+        if (_askingLock == true)
+        {
+            TryLock();
         }
     }
 
@@ -105,7 +135,7 @@ public class P_CameraController : P_Component
     {
         UpdateToLockedDirection();
 
-        _lockYAngle = Vector3.SignedAngle(Vector3.forward, _toLockedDirection.SetY(0), Vector3.up);
+        _lockYAngle = Vector3.SignedAngle(Vector3.forward, _toLockedDirection.SetY(0), Vector3.up) - master.NativeYRotation;
         _lockXAngle = Vector3.SignedAngle(Vector3.forward, (Vector3.forward.AddY(_toLockedDirection.y)), Vector3.right);
     }
     private void UpdateToLockedDirection()
@@ -114,7 +144,8 @@ public class P_CameraController : P_Component
 
         _toLockedDirection =  
             ((_lockedTransform.position +
-            pRefs.RotationCalculator.right * CData.HorizontalOffset) -
+            pRefs.RotationCalculator.right * CData.HorizontalOffset +
+            pRefs.RotationCalculator.up * CData.VerticalOffset) -
             pRefs.CamFollower.position).normalized;
     }
     private void ApplyRotations()
@@ -122,15 +153,22 @@ public class P_CameraController : P_Component
         pRefs.CamXRotator.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
         pRefs.CamYRotator.localRotation = Quaternion.Euler(0f, _yRot, 0f);
     }
+    private void ApplyFOV()
+    {
+        if (_askingLock == true || _locked == true)
+        {
+            _targetFov = CData.LockedFOV;
+        }
+        else
+        {
+            _targetFov = CData.NormalFOV;
+        }
 
+        pRefs.Camera.fieldOfView = Mathf.Lerp(pRefs.Camera.fieldOfView, _targetFov, CData.FOVChangeSpeed);
+    }
 
     public override void LateUpdate()
     {
-        if (_autoRotating == false && _locked == false)
-        {
-            CheckAutoRotate();
-        }
-
         UpdatePosition();
     }
 
@@ -147,134 +185,12 @@ public class P_CameraController : P_Component
         }
     }
 
-
-    //utilities
-    public void Lock()
-    {
-        if (WorldManager.Enemies.Count == 0)
-        {
-            return;
-        }
-
-        ComputeVisibleEnemies();
-        _lockedTransform = GetNearestEnemyFromScreenCenter();
-
-        if (_lockedTransform != null)
-        {
-            _locked = true;
-        }
-    }
-    public void Unlock()
-    {
-        _locked = false;
-        _lockedTransform = null;
-    }
-    private void LockLeftTarget()
-    {
-        int index = _visibleEnemiesTransforms.IndexOf(_lockedTransform);
-        index--;
-        if (index < 0)
-        {
-            //index = _visibleEnemiesTransforms.Count - 1;
-            index = 0;
-        }
-
-        _lockedTransform = _visibleEnemiesTransforms[index];
-    }
-    private void LockRightTarget()
-    {
-        int index = _visibleEnemiesTransforms.IndexOf(_lockedTransform);
-        index++;
-        if (index >= _visibleEnemiesTransforms.Count)
-        {
-            //index = 0;
-            index = _visibleEnemiesTransforms.Count - 1;
-        }
-
-        _lockedTransform = _visibleEnemiesTransforms[index];
-    }
-
-    private Vector3 GetCamTargetPos()
-    {
-        return Position + pRefs.CamTarget.localPosition;
-    }
-    private void ComputeVisibleEnemies()
-    {
-        _visibleEnemiesTransforms.Clear();
-        _visibleEnemiesXScreenPos.Clear();
-        Vector2 screenPos;
-        Vector3 localPos;
-        
-        for (int i = 0; i < WorldManager.Enemies.Count; i++)
-        {
-            localPos = pRefs.CamYRotator.InverseTransformPoint(WorldManager.Enemies[i].position);
-
-            if (localPos.z <= 0f)
-            {
-                continue;
-            }
-            else
-            {
-                screenPos = pRefs.Camera.WorldToScreenPoint(WorldManager.Enemies[i].position);
-                if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
-                {
-                    continue;
-                }
-
-                if (_visibleEnemiesTransforms.Count == 0)
-                {
-                    _visibleEnemiesTransforms.Add(WorldManager.Enemies[i]);
-                    _visibleEnemiesXScreenPos.Add(screenPos.x);
-                }
-                else
-                {
-                    for (int j = 0; j < _visibleEnemiesTransforms.Count; j++)
-                    {
-                        if (_visibleEnemiesXScreenPos[j] > screenPos.x)
-                        {
-                            _visibleEnemiesTransforms.Insert(j, WorldManager.Enemies[i]);
-                            _visibleEnemiesXScreenPos.Insert(j, screenPos.x);
-                            break;
-                        }
-                        else if (j == _visibleEnemiesTransforms.Count - 1)
-                        {
-                            _visibleEnemiesTransforms.Insert(j + 1, WorldManager.Enemies[i]);
-                            _visibleEnemiesXScreenPos.Insert(j + 1, screenPos.x);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    private Transform GetNearestEnemyFromScreenCenter()
-    {
-        if (_visibleEnemiesTransforms.Count == 0)
-        {
-            return null;
-        }
-
-        int index = 0;
-        float minDist = Mathf.Abs(_visibleEnemiesXScreenPos[index] - Screen.width * 0.5f);
-        float curDist;
-        for (int i = 1; i < _visibleEnemiesTransforms.Count; i++)
-        {
-            curDist = Mathf.Abs(_visibleEnemiesXScreenPos[i] - Screen.width * 0.5f);
-            if (curDist < minDist)
-            {
-                minDist = curDist;
-                index = i;
-            }
-        }
-
-        return _visibleEnemiesTransforms[index];
-    }
-
+    //Coroutines
     private IEnumerator AutoRotateCoroutine()
     {
         _autoRotating = true;
         //Get auto look rot
-        _autoLookYRot = Vector3.SignedAngle(Vector3.forward, pRefs.VisualBody.forward, Vector3.up);
+        _autoLookYRot = Vector3.SignedAngle(Vector3.forward, pRefs.VisualBody.forward, Vector3.up) - master.NativeYRotation;
 
         while (Mathf.Abs(Mathf.DeltaAngle(_yRot, _autoLookYRot)) > 0.1f)
         {
@@ -295,4 +211,153 @@ public class P_CameraController : P_Component
         _autoRotatingLock = false;
     }
 
+
+    //utilities
+    public void TryLock()
+    {
+        if (IAManager.Enemies.Count == 0)
+        {
+            return;
+        }
+        ComputeVisibleEnemies();
+        EntityController temp = GetNearestEnemyFromScreenCenter();
+
+        if (temp != null)
+        {
+            Lock(temp);
+        }
+    }
+    public void Lock(EntityController entity)
+    {
+        _lockedEntity = entity;
+        _lockedTransform = _lockedEntity.Refs.PhysicBody;
+        _locked = true;
+        _askingLock = false;
+
+        WorldManager.OnPlayerLock(_lockedEntity);
+    }
+    public void Unlock()
+    {
+        _locked = false;
+        _lockedTransform = null;
+
+        WorldManager.OnPlayerUnlock();
+    }
+    private void LockLeftTarget()
+    {
+        int index = _visibleEnemiesTransforms.IndexOf(_lockedTransform);
+        index--;
+        if (index < 0)
+        {
+            //index = _visibleEnemiesTransforms.Count - 1;
+            index = 0;
+        }
+
+        Lock(_visibleEnemiesTransforms[index].GetComponentInParent<EntityController>());
+    }
+    private void LockRightTarget()
+    {
+        int index = _visibleEnemiesTransforms.IndexOf(_lockedTransform);
+        index++;
+        if (index >= _visibleEnemiesTransforms.Count)
+        {
+            //index = 0;
+            index = _visibleEnemiesTransforms.Count - 1;
+        }
+
+        Lock(_visibleEnemiesTransforms[index].GetComponentInParent<EntityController>());
+    }
+
+    private Vector3 GetCamTargetPos()
+    {
+        return Position + pRefs.CamTarget.localPosition;
+    }
+    private void ComputeVisibleEnemies()
+    {
+        _visibleEnemiesTransforms.Clear();
+        _visibleEnemiesXScreenPos.Clear();
+        Vector2 screenPos;
+        Vector3 localPos;
+        
+        for (int i = 0; i < IAManager.Enemies.Count; i++)
+        {
+            localPos = pRefs.CamYRotator.InverseTransformPoint(IAManager.Enemies[i].Position);
+
+            if (localPos.z <= 0f)
+            {
+                continue;
+            }
+            else
+            {
+                screenPos = pRefs.Camera.WorldToScreenPoint(IAManager.Enemies[i].Position);
+                if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
+                {
+                    continue;
+                }
+
+                if (_visibleEnemiesTransforms.Count == 0)
+                {
+                    _visibleEnemiesTransforms.Add(IAManager.Enemies[i].Refs.PhysicBody);
+                    _visibleEnemiesXScreenPos.Add(screenPos.x);
+                }
+                else
+                {
+                    for (int j = 0; j < _visibleEnemiesTransforms.Count; j++)
+                    {
+                        if (_visibleEnemiesXScreenPos[j] > screenPos.x)
+                        {
+                            _visibleEnemiesTransforms.Insert(j, IAManager.Enemies[i].Refs.PhysicBody);
+                            _visibleEnemiesXScreenPos.Insert(j, screenPos.x);
+                            break;
+                        }
+                        else if (j == _visibleEnemiesTransforms.Count - 1)
+                        {
+                            _visibleEnemiesTransforms.Insert(j + 1, IAManager.Enemies[i].Refs.PhysicBody);
+                            _visibleEnemiesXScreenPos.Insert(j + 1, screenPos.x);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private EntityController GetNearestEnemyFromScreenCenter()
+    {
+        if (_visibleEnemiesTransforms.Count == 0)
+        {
+            return null;
+        }
+
+        int index = 0;
+        float minDist = Mathf.Abs(_visibleEnemiesXScreenPos[index] - Screen.width * 0.5f);
+        float curDist;
+        for (int i = 1; i < _visibleEnemiesTransforms.Count; i++)
+        {
+            curDist = Mathf.Abs(_visibleEnemiesXScreenPos[i] - Screen.width * 0.5f);
+            if (curDist < minDist)
+            {
+                minDist = curDist;
+                index = i;
+            }
+        }
+
+        return _visibleEnemiesTransforms[index].GetComponentInParent<EntityController>();
+    }
+
+    //Events
+    public void OnEntityKilled(EntityController killedEntity, AttackData killingAttack)
+    {
+        if (_locked == true && killedEntity == _lockedEntity)
+        {
+            Unlock();
+            TryLock();
+        }
+    }
+    public void OnDeath()
+    {
+        if (_locked == true)
+        {
+            Unlock();
+        }
+    }
 }

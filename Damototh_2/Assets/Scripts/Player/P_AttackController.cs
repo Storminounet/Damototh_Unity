@@ -19,6 +19,7 @@ public class P_AttackController : P_Component
     public P_AttackController(P_References playerReferences, P_PlayerController master) : base(playerReferences, master) { }
 
     private int _currentAttackId = 0;
+    private Quaternion _currentAttackRotation;
     private AttackState _currentAttackState = AttackState.None;
     private AttackData _currentAttack = null;
     private GameObject _currentAttackGO = null;
@@ -34,6 +35,10 @@ public class P_AttackController : P_Component
 
     public override void MainUpdate()
     {
+        if (master.CanPerformActions == false)
+        {
+            return;
+        }
         CheckAttacks();
     }
 
@@ -77,6 +82,7 @@ public class P_AttackController : P_Component
             master.StopCoroutine(_attackVelocityOverridesCoroutine);
         }
 
+
         _attackCoroutine = master.StartCoroutine(AttackCoroutine(attack));
         _attackVelocityOverridesCoroutine = master.StartCoroutine(AttackVelocityOverridesCoroutine(attack.VelocityOverrideInitialWait, attack.AttackVelocityOverrides));
     }
@@ -85,6 +91,8 @@ public class P_AttackController : P_Component
     {
         _currentAttack = attack;
         _currentAttackState = AttackState.Casting;
+
+        master.Being.AddHealth(-attack.HealthCost);
 
         yield return new WaitForSeconds(attack.Timings.CastTime);
 
@@ -129,10 +137,19 @@ public class P_AttackController : P_Component
 
         private void InstantiateAttackHitbox(AttackData attack)
     {
+        if (master.CameraController.Locked == false)
+        {
+            _currentAttackRotation = Quaternion.LookRotation(master.MovementController.LastMoveDirection);
+        }
+        else
+        {
+            _currentAttackRotation = master.VisualHandler.TargetQuaternion;
+        }
+
         _currentAttackGO = Object.Instantiate(
             attack.Model,
             Position,
-            Quaternion.LookRotation(master.MovementController.LastMoveDirection),
+            _currentAttackRotation,
             master.transform);
 
         _currentAttackMono = _currentAttackGO.GetComponent<Attack>();

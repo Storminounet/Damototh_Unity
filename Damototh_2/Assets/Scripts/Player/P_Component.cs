@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class P_Component : IEntityComponent
 {
+    private DebugLog _print;
+    protected delegate void DebugLog(object item);
+    protected DebugLog Print { get { return _print; } }
+
     protected P_References pRefs;
     protected P_PlayerController master;
 
-    protected delegate void DebugLog(object item);
-    protected DebugLog Print;
-
+    public P_BeingData BData { get { return master.BData; } }
     public P_InputData IData { get { return master.IData; } }
     public P_MovementData MData { get { return master.MData; } }
     public P_AttackData AData { get { return master.AData; } }
@@ -20,11 +22,14 @@ public class P_Component : IEntityComponent
     public Quaternion Rotation { get { return master.Rotation; } set { master.Rotation = value; } }
     public Vector3 Velocity { get { return master.Velocity; } set { master.Velocity = value; } }
 
+    public EntityController EntityMaster { get { return master; } }
+
     public P_Component(P_References playerReferences, P_PlayerController master)
     {
         pRefs = playerReferences;
         this.master = master;
-        Print = Debug.Log;
+
+        _print = Debug.Log;
     }
 
     public virtual void Awake()

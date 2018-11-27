@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9383b0df916402b4496aec4e1d955aea, type: 3}
   m_Name: Input Data
   m_EditorClassIdentifier: 
-  _controllerType: 3
-  _controllerId: 1
+  _controllerType: 1
+  _controllerId: 0
   _shortcuts:
     k_MoveForward: 122
     k_MoveBackward: 115
@@ -25,10 +25,10 @@ MonoBehaviour:
     k_LightAttack:
       _inputType: 0
       _inputMode: 1
-      _key: 0
+      _key: 103
       _mouseButtonId: 0
       _wheelDirection: 0
-      Opened: 1
+      Opened: 0
     k_HeavyAttack:
       _inputType: 0
       _inputMode: 1

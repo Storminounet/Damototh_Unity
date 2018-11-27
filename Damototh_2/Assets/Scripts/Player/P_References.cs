@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class P_References : EntityReferences
 {
-    [Header("Data")]
-    [Space]
+
     [SerializeField] private P_InputData _inputData;
     [SerializeField] private P_CameraData _cameraData;
     [SerializeField] private P_MovementData _movementData;
@@ -27,16 +26,16 @@ public class P_References : EntityReferences
     [SerializeField] private Transform _rotationCalculator;
 
 
-    [Header("Components")]
-    [Space]
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private CapsuleCollider _collision;
-    [SerializeField] private Camera _camera;
+
 
     [Header("Others")]
     [Space]
     [SerializeField] private Transform _velocitySpace;
+    [SerializeField] private Camera _camera;
 
+    private P_BeingData _playerBeingData;
+     
+    public P_BeingData PlayerBeingData { get { return _playerBeingData; } }
     public P_InputData InputData { get { return _inputData; } }
     public P_CameraData CameraData { get { return _cameraData; } }
     public P_MovementData MovementData { get { return _movementData; } }
@@ -57,11 +56,21 @@ public class P_References : EntityReferences
     public Transform RotationCalculator { get { return _rotationCalculator; } }
 
 
-    public Rigidbody Rigidbody { get { return _rigidbody; } }
-    public CapsuleCollider Collision { get { return _collision; } }
     public Camera Camera { get { return _camera; } }
 
     public Transform VelocitySpace { get { return _velocitySpace; } }
 
+
+    private void Awake()
+    {
+        _playerBeingData = (P_BeingData)base.BeingData;
+    }
+
+#if UNITY_EDITOR
+    public void EditorForceAwake()
+    {
+        Awake();
+    }
+#endif
 
 }

@@ -17,8 +17,6 @@ public class Attack : MonoBehaviour
     private EntityController _owner;
     private AttackData _linkedData;
 
-
-
     public void Initialize(EntityController owner, AttackData data)
     {
         _owner = owner;
@@ -49,7 +47,9 @@ public class Attack : MonoBehaviour
             {
                 return;
             }
-            entity.TakeHit(_linkedData);
+
+            entity.TakeHit(_owner, _linkedData);
+            _owner.OnHitSuccessful(entity, _linkedData);
 
             _currentLife--;
             if (_currentLife <= 0)

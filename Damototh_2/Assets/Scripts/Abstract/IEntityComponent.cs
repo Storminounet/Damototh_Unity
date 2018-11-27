@@ -6,8 +6,10 @@ using UnityEditor;
 #endif
 
 
-public interface IEntityComponent 
+public interface IEntityComponent
 {
+    EntityController EntityMaster { get; }
+
     void Awake();
     void Start();
     void MainFixedUpdate();

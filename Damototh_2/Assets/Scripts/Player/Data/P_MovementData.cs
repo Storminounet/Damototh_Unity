@@ -25,6 +25,7 @@ public class P_MovementData : ScriptableObject
     [SerializeField] private float _autoBrake;
     [Space]
     [SerializeField, Range(1f, 89f)] private float _climbMaxAngle;
+
     [Header("Dodge")]
     [Space]
     [SerializeField] private float _dodgeDuration;
@@ -32,10 +33,17 @@ public class P_MovementData : ScriptableObject
     [SerializeField] private AnimationCurve _dodgeSpeedOverDuration;
     [SerializeField] private float _dodgeCooldown;
 
+    [Header("Fall Damages")]
+    [Space]
+    [SerializeField] private float _fallDamageMinVelocity;
+    [SerializeField] private float _fallDamageBase;
+    [SerializeField] private float _fallDamagePower;
+
     [Header("Ground Detection")]
     [Space]
     [SerializeField] private float _sphereCastRadius;
     [SerializeField] private float _sphereCastAdditionalLength;
+
     [Header("Body Shape")]
     [Space]
     [SerializeField] private float _bodyRadius = 0.25f;
@@ -64,6 +72,9 @@ public class P_MovementData : ScriptableObject
     public AnimationCurve DodgeSpeedOverDuration { get { return _dodgeSpeedOverDuration; } }
     public float DodgeCooldown { get { return _dodgeCooldown; } }
 
+    public float FallDamageMinVelocity { get { return _fallDamageMinVelocity; } }
+    public float FallDamageBase { get { return _fallDamageBase; } }
+    public float FallDamagePower { get { return _fallDamagePower; } }
 
     public float SphereCastRadius { get { return _sphereCastRadius; } }
     public float SphereCastAdditionalLength { get { return _sphereCastAdditionalLength; } }
@@ -90,9 +101,16 @@ public class P_MovementData : ScriptableObject
             _stepUpHeight = _standHeight - _bodyRadius * 2;
         }
 
+        P_References f;
+        if (f = FindObjectOfType<P_References>())
+        {
+            if (f.PlayerBeingData == null)
+            f.EditorForceAwake();
+        }
         P_PlayerController p;
         if (p = FindObjectOfType<P_PlayerController>())
         {
+            if (p.Being == null)
             p.EditorForceAwake();
             p.MovementController.SetBodyShape(_standHeight, _stepUpHeight, _bodyRadius);
         }

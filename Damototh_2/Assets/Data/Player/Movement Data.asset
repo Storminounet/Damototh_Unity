@@ -22,7 +22,7 @@ MonoBehaviour:
   _autoBrake: 10
   _climbMaxAngle: 46
   _dodgeDuration: 0.2
-  _dodgeSpeed: 10
+  _dodgeSpeed: 8
   _dodgeSpeedOverDuration:
     serializedVersion: 2
     m_Curve:
@@ -48,6 +48,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _dodgeCooldown: 1
+  _fallDamageMinVelocity: 6
+  _fallDamageBase: 2
+  _fallDamagePower: 1.2
   _sphereCastRadius: 0.23
   _sphereCastAdditionalLength: 0.02
   _bodyRadius: 0.25

@@ -27,8 +27,9 @@ MonoBehaviour:
     _attackVelocityOverrides:
     - _velocity: {x: 0, y: 0, z: 5}
       _duration: 0.05
-    _stunPower: 0
-    _stunTime: 0
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 1
   _lightAttack_2:
@@ -45,8 +46,9 @@ MonoBehaviour:
       _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
-    _stunPower: 0
-    _stunTime: 0
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 1
   _lightAttack_3:
@@ -63,8 +65,9 @@ MonoBehaviour:
       _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
-    _stunPower: 0
-    _stunTime: 0
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 0
   _heavyAttack_1:
@@ -75,14 +78,15 @@ MonoBehaviour:
       _forcedRecoverAnim: {fileID: 0}
       _comboRecoverAnim: {fileID: 0}
     _timings:
-      _castTime: 0
-      _attackTime: 0
-      _forcedRecoverTime: 0
-      _comboRecoverTime: 0
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
+    _damages: 5
     _stunPower: 0
-    _stunTime: 0
+    _healthCost: 10
     _maximumEnemyNumberHit: 1
     _canCombo: 1
   _heavyAttack_2:
@@ -93,14 +97,15 @@ MonoBehaviour:
       _forcedRecoverAnim: {fileID: 0}
       _comboRecoverAnim: {fileID: 0}
     _timings:
-      _castTime: 0
-      _attackTime: 0
-      _forcedRecoverTime: 0
-      _comboRecoverTime: 0
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
+    _damages: 0
     _stunPower: 0
-    _stunTime: 0
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 1
   _heavyAttack_3:
@@ -111,14 +116,15 @@ MonoBehaviour:
       _forcedRecoverAnim: {fileID: 0}
       _comboRecoverAnim: {fileID: 0}
     _timings:
-      _castTime: 0
-      _attackTime: 0
-      _forcedRecoverTime: 0
-      _comboRecoverTime: 0
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
+    _damages: 0
     _stunPower: 0
-    _stunTime: 0
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 0
   _hydraAttackOne:
@@ -135,8 +141,9 @@ MonoBehaviour:
       _comboRecoverTime: 0
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
+    _damages: 0
     _stunPower: 0
-    _stunTime: 0
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 0
   _hydraAttackTwo:
@@ -153,7 +160,8 @@ MonoBehaviour:
       _comboRecoverTime: 0
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
+    _damages: 0
     _stunPower: 0
-    _stunTime: 0
+    _healthCost: 0
     _maximumEnemyNumberHit: 1
     _canCombo: 0

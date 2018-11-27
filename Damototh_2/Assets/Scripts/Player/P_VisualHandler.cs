@@ -8,9 +8,9 @@ public class P_VisualHandler : P_Component
 
     private float _currentYOffset;
     private Quaternion _targetQuaternion;
+    private Vector3 _toLockedVector;
 
     public Quaternion TargetQuaternion { get { return _targetQuaternion; } }
-
 
     public override void MainUpdate()
     {
@@ -38,7 +38,8 @@ public class P_VisualHandler : P_Component
         }
         else
         {
-            _targetQuaternion = Quaternion.LookRotation(master.CameraController.ToLockedDirection.SetY(0));
+            _toLockedVector = (master.CameraController.LockedTransform.position - pRefs.VisualBody.position).SetY(0);
+            _targetQuaternion = Quaternion.LookRotation(_toLockedVector);
         }
 
         pRefs.VisualBody.rotation = Quaternion.RotateTowards(

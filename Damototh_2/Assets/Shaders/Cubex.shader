@@ -90,15 +90,15 @@ Shader "Cubex"
 }
 /*ASEBEGIN
 Version=15401
-59;92;1377;749;911.3807;209.0479;1;True;True
-Node;AmplifyShaderEditor.WorldPosInputsNode;8;-1000.299,-112.5676;Float;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
+147;92;1189;655;1279.002;278.7582;1.530029;False;True
 Node;AmplifyShaderEditor.RangedFloatNode;21;-951.0682,94.60138;Float;False;Property;_Offset;Offset;1;0;Create;True;0;0;False;0;0;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;20;-772.9688,-74.39861;Float;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WorldPosInputsNode;8;-1000.299,-112.5676;Float;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.RangedFloatNode;22;-832.7682,198.6014;Float;False;Property;_Size;Size;2;0;Create;True;0;0;False;0;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;20;-772.9688,-74.39861;Float;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleDivideOpNode;19;-571.8026,-67.09732;Float;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexColorNode;11;-393.1438,185.1062;Float;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ClampOpNode;5;-356.8133,-11.96196;Float;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;13;-193.8737,94.82919;Float;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexColorNode;11;-393.1438,185.1062;Float;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;13;-182.317,91.52725;Float;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.DynamicAppendNode;14;-14.42065,142.1696;Float;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.RangedFloatNode;15;-7.633518,1.135012;Float;False;Property;_Intensity;Intensity;0;0;Create;True;0;0;False;0;0;5;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;16;155.0675,110.2186;Float;False;2;2;0;FLOAT;0;False;1;FLOAT4;0,0,0,0;False;1;FLOAT4;0
@@ -118,4 +118,4 @@ WireConnection;16;0;15;0
 WireConnection;16;1;14;0
 WireConnection;1;0;16;0
 ASEEND*/
-//CHKSM=3A20F49AE67186FC683F0B15DB96C1328991D2E3
+//CHKSM=0A3742A23659D0E02D4F649514B4CB16B285F86D

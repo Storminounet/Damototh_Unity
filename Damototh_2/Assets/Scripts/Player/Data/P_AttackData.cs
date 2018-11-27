@@ -51,8 +51,9 @@ public class AttackData
     [SerializeField] private float _velocityOverrideInitialWait;
     [SerializeField] private AttackVelocityOverride[] _attackVelocityOverrides;
     [Space]
+    [SerializeField] private float _damages;
     [SerializeField] private float _stunPower;
-    [SerializeField] private float _stunTime;
+    [SerializeField] private float _healthCost;
     [Space]
     [SerializeField] private int _maximumEnemyNumberHit = 1;
     [Space]
@@ -66,8 +67,9 @@ public class AttackData
     public float VelocityOverrideInitialWait { get { return _velocityOverrideInitialWait; } }
     public AttackVelocityOverride[] AttackVelocityOverrides { get { return _attackVelocityOverrides; } }
 
+    public float Damages { get { return _damages; } }
     public float StunPower { get { return _stunPower; } }
-    public float StunTime { get { return _stunTime; } }
+    public float HealthCost { get { return _healthCost; } }
 
     public int MaximumEnemyNumberHit { get { return _maximumEnemyNumberHit; } }
 

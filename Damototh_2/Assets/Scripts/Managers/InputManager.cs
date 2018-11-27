@@ -163,7 +163,8 @@ public class InputManager : Singleton<InputManager>
     public static bool Dodge { get { return _dodge; } }
 
     public static bool AutoRotate { get { return _autoRotate; } }
-    public static bool Lock { get { return _lock; } }
+    public static bool LockDown { get { return _lockDown; } }
+    public static bool LockUp { get { return _lockUp; } }
     public static bool LockLeftTarget { get { return _lockLeftTarget; } }
     public static bool LockRightTarget { get { return _lockRightTarget; } }
 
@@ -195,7 +196,8 @@ public class InputManager : Singleton<InputManager>
     private static bool _dodge;
 
     private static bool _autoRotate;
-    private static bool _lock;
+    private static bool _lockDown;
+    private static bool _lockUp;
     private static bool _lockLeftTarget;
     private static bool _lockRightTarget;
 
@@ -376,7 +378,8 @@ public class InputManager : Singleton<InputManager>
                 _dodge = Input.GetKeyDown(_iData.Shortcuts.K_Dodge);
 
                 _autoRotate = Input.GetKeyDown(_iData.Shortcuts.K_AutoRotate);
-                _lock = Input.GetKeyDown(_iData.Shortcuts.K_Lock);
+                _lockUp = Input.GetKeyUp(_iData.Shortcuts.K_Lock);
+                _lockDown = Input.GetKeyDown(_iData.Shortcuts.K_Lock);
 
                 _lockLeftTarget = _lastWheelState == InputState.None && _wheelState == InputState.Positive;
                 _lockRightTarget = _lastWheelState == InputState.None && _wheelState == InputState.Negative;
@@ -391,7 +394,8 @@ public class InputManager : Singleton<InputManager>
                 _dodge = GetControllerButton(_iData.Shortcuts.C_Dodge, _iData.ControllerId, InputMode.Down);
 
                 _autoRotate = GetControllerButton(_iData.Shortcuts.C_AutoRotate, _iData.ControllerId, InputMode.Down);
-                _lock = GetControllerButton(_iData.Shortcuts.C_Lock, _iData.ControllerId, InputMode.Down);
+                _lockUp = GetControllerButton(_iData.Shortcuts.C_Lock, _iData.ControllerId, InputMode.Up);
+                _lockDown = GetControllerButton(_iData.Shortcuts.C_Lock, _iData.ControllerId, InputMode.Down);
 
                 _lockLeftTarget = GetControllerAxis(ControllerAxis.rightStickHorizontal, _iData.ControllerId, InputMode.Down, false);
                 _lockRightTarget = GetControllerAxis(ControllerAxis.rightStickHorizontal, _iData.ControllerId, InputMode.Down, true);
