@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b9f8c2d56f8dc4d8f3eded0407bf2b, type: 3}
   m_Name: GuardIAData
   m_EditorClassIdentifier: 
-  _visionDistance: 12.9
+  _visionDistance: 11.71
   _visionMinDistance: 1
-  _visionAngle: 42.5
-  _visionAngleDistanceDecreaseLinearity: 11.94
+  _visionAngle: 38.96
+  _visionAngleDistanceDecreaseLinearity: 7.5
   _visionDistanceBackward: 1

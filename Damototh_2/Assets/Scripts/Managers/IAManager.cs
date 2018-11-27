@@ -11,6 +11,7 @@ public class IAManager : Singleton<IAManager>
     [Header("Enemies")]
     [SerializeField] private List<EntityController> _enemies;
     [SerializeField] private List<EntityController> _IAEnemies;
+    [SerializeField] private List<EntityController> _DrinkableCorpses;
 
     [Header("Utilities")]
     [Space]
@@ -20,6 +21,7 @@ public class IAManager : Singleton<IAManager>
 
     public static List<EntityController> Enemies { get { return Instance._enemies; } }
     public static List<EntityController> IAEnemies { get { return Instance._IAEnemies; } }
+    public static List<EntityController> DrinkableCorpses { get { return Instance._DrinkableCorpses; } }
 
     private void Awake()
     {
@@ -44,6 +46,15 @@ public class IAManager : Singleton<IAManager>
             {
                 Enemies.Remove(entity);
             }
+
+            DrinkableCorpses.Add(entity);
+        }
+    }
+    public static void OnEntityDrank(EntityController entity)
+    {
+        if (DrinkableCorpses.Contains(entity))
+        {
+            DrinkableCorpses.Remove(entity);
         }
     }
     public static void OnEntityStartDodging(EntityController entity)

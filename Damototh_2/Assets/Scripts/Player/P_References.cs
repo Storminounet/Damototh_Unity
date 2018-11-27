@@ -9,6 +9,7 @@ public class P_References : EntityReferences
     [SerializeField] private P_CameraData _cameraData;
     [SerializeField] private P_MovementData _movementData;
     [SerializeField] private P_AttackData _attackData;
+    [SerializeField] private P_InteractionData _interactionData;
     [SerializeField] private P_VisualData _visualData;
 
     [Header("Camera")]
@@ -25,11 +26,9 @@ public class P_References : EntityReferences
     [Space]
     [SerializeField] private Transform _rotationCalculator;
 
-
-
-
     [Header("Others")]
     [Space]
+    [SerializeField] private Transform _interactCircle;
     [SerializeField] private Transform _velocitySpace;
     [SerializeField] private Camera _camera;
 
@@ -40,6 +39,7 @@ public class P_References : EntityReferences
     public P_CameraData CameraData { get { return _cameraData; } }
     public P_MovementData MovementData { get { return _movementData; } }
     public P_AttackData AttackData { get { return _attackData; } }
+    public P_InteractionData InteractionData { get { return _interactionData; } }
     public P_VisualData VisualData { get { return _visualData; } }
 
 
@@ -56,9 +56,10 @@ public class P_References : EntityReferences
     public Transform RotationCalculator { get { return _rotationCalculator; } }
 
 
-    public Camera Camera { get { return _camera; } }
 
+    public Transform InteractCircle { get { return _interactCircle; } }
     public Transform VelocitySpace { get { return _velocitySpace; } }
+    public Camera Camera { get { return _camera; } }
 
 
     private void Awake()

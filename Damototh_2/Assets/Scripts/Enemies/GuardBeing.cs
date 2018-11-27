@@ -13,6 +13,8 @@ public class GuardBeing : GuardComponent, IEntityBeing
     private float _currentStunResistance = 0f;
     private LivingState _livingState = LivingState.Living;
 
+    private Coroutine _stunCoroutine;
+
     public LivingState LivingState { get { return _livingState; } }
     public float CurrentHealth { get { return _currentHealth; } }
     public float CurrentStunResistance { get { return _currentStunResistance; } }
@@ -25,8 +27,31 @@ public class GuardBeing : GuardComponent, IEntityBeing
 
     public override void MainUpdate()
     {
+        if (_livingState != LivingState.Dead)
+        {
+            ApplyHealthRegen();
+            ApplyStunResistanceRegen();
+        }
+        else
+        {
+            DeathUpdate();
+        }
+    }
+    private void ApplyHealthRegen()
+    {
         AddHealth(BData.HealthRegenPerSecond * WorldData.DeltaTime);
-        AddStunResistance(BData.StunResistanceRegenPerSecond * WorldData.DeltaTime);
+    }
+    private void ApplyStunResistanceRegen()
+    {
+        if (_livingState == LivingState.Living)
+        {
+            AddStunResistance(BData.StunResistanceRegenPerSecond * WorldData.DeltaTime);
+        }
+    }
+
+    private void DeathUpdate()
+    {
+        Refs.PhysicBody.eulerAngles = Vector3.MoveTowards(Refs.PhysicBody.eulerAngles, Refs.PhysicBody.eulerAngles.SetX(90f), Time.deltaTime * 90f);
     }
 
     public void AddHealth(float amount)
@@ -52,18 +77,43 @@ public class GuardBeing : GuardComponent, IEntityBeing
     public void TakeHit(AttackData attack)
     {
         AddHealth(-attack.Damages);
-        AddStunResistance(-attack.StunPower);
+
+        if (_livingState == LivingState.Living)
+        {
+            AddStunResistance(-attack.StunPower);
+        }
     }
 
     private void Stun()
     {
+        if (_stunCoroutine != null)
+        {
+            Master.StopCoroutine(_stunCoroutine);
+        }
 
+        _stunCoroutine = Master.StartCoroutine(StunCoroutine());
+
+        AddStunResistance(BData.StartStunResistance);
+    }
+
+    private IEnumerator StunCoroutine()
+    {
+        _livingState = LivingState.Stunned;
+        yield return new WaitForSeconds(Mathf.Lerp(BData.StunTimeAtNoHealth, BData.StunTimeAtFullHealth, _currentHealth / BData.MaxHealth));
+        _livingState = LivingState.Living;
+
+        _stunCoroutine = null;
     }
 
     private void Death()
     {
+        if (_stunCoroutine != null)
+        {
+            Master.StopCoroutine(_stunCoroutine);
+        }
+
         _livingState = LivingState.Dead;
+        Master.OnDeath();
         WorldManager.OnEntityDeath(EntityMaster);
-        Object.Destroy(EntityMaster.gameObject);
     }
 }

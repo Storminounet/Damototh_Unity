@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class GuardController : EntityController 
+public class GuardController : EntityController, IInteractable
 {
 #if UNITY_EDITOR
     [SerializeField] private bool _displayVisionCone = false;
 #endif
 
+
+    #region Refs fields
     private GuardReferences _gRefs;
     private GuardBeing _being;
     private GuardIA _IA;
@@ -20,6 +22,16 @@ public class GuardController : EntityController
     public GuardIAData IAData { get { return _gRefs.IAData; } }
     public GuardBeingData BeingData { get { return _gRefs.GuardBeingData; } }
     public GuardVisual Visual { get { return _visual; } }
+    #endregion
+
+
+    private bool _canBeInteracted = false;
+    private InteractableType _interactableType = InteractableType.Corpse;
+
+    public bool CanBeInteracted { get { return _canBeInteracted; } }
+    public InteractableType InteractableType { get { return _interactableType; } }
+
+    public Vector3 InteractPosition { get { return _gRefs.InteractTransform.position; } }
 
     protected override void Awake()
     {
@@ -37,6 +49,22 @@ public class GuardController : EntityController
 
 
         AwakeComponents();
+    }
+
+    public override void OnDeath()
+    {
+        _canBeInteracted = true;
+    }
+
+    public void Interact()
+    {
+        if (_canBeInteracted == false)
+        {
+            return;
+        }
+
+        _canBeInteracted = false;
+        WorldManager.OnEntityDrank(this);
     }
 
 #if UNITY_EDITOR

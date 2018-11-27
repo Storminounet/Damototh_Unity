@@ -11,8 +11,14 @@ public class GuardReferences : EntityReferences
     [SerializeField] private GuardIAData _IAData;
     private GuardBeingData _guardBeingData;
 
+    [Header("Ohters")]
+    [Space]
+    [SerializeField] private Transform _interactTransform;
+
     public GuardIAData IAData { get { return _IAData; } }
     public GuardBeingData GuardBeingData { get { return _guardBeingData; } }
+
+    public Transform InteractTransform { get { return _interactTransform; } }
 
     private void Awake()
     {

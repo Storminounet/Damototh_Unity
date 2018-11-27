@@ -107,15 +107,19 @@ public class WorldManager : Singleton<WorldManager>
     {
         IAManager.OnEntityDeath(entity);
     }
+    public static void OnEntityDrank(EntityController entity)
+    {
+        IAManager.OnEntityDrank(entity);
+    }
 
     //Others
     private void HandleCheats()
     {
         if (Input.GetKeyDown(_changeControllerKey))
         {
-            _player.IData.SetControllerType(
-                _player.IData.ControllerType == ControllerType.Keyboard ? ControllerType.PS4 : ControllerType.Keyboard,
-                _player.IData.ControllerType == ControllerType.Keyboard ? 0 : 1);
+            _player.IpData.SetControllerType(
+                _player.IpData.ControllerType == ControllerType.Keyboard ? ControllerType.PS4 : ControllerType.Keyboard,
+                _player.IpData.ControllerType == ControllerType.Keyboard ? 0 : 1);
         }
     }
 

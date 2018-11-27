@@ -18,6 +18,7 @@ public class P_PlayerController : EntityController
     private P_Being _being;
     private P_CameraController _cameraController;
     private P_MovementController _movementController;
+    private P_InteractionController _interactionController;
     private P_AttackController _attackController;
     private P_VisualHandler _visualHandler;
 
@@ -26,15 +27,17 @@ public class P_PlayerController : EntityController
     public P_References pRefs { get { return _pRefs; } }
 
     public new P_BeingData BData { get { return pRefs.PlayerBeingData; } }
-    public P_InputData IData { get { return pRefs.InputData; } }
+    public P_InputData IpData { get { return pRefs.InputData; } }
     public P_CameraData CData { get { return pRefs.CameraData; } }
     public P_MovementData MData { get { return pRefs.MovementData; } }
     public P_AttackData AData { get { return pRefs.AttackData; } }
+    public P_InteractionData ItData { get { return pRefs.InteractionData; } }
     public P_VisualData VData { get { return pRefs.VisualData; } }
 
     public new P_Being Being { get { return _being; } }
     public P_CameraController CameraController { get { return _cameraController; } }
     public P_MovementController MovementController { get { return _movementController; } }
+    public P_InteractionController InteractionController { get { return _interactionController; } }
     public P_AttackController AttackController { get { return _attackController; } }
     public P_VisualHandler VisualHandler { get { return _visualHandler; } }
 
@@ -87,12 +90,14 @@ public class P_PlayerController : EntityController
         _being = new P_Being(_pRefs, this);
         _cameraController = new P_CameraController(_pRefs, this);
         _movementController = new P_MovementController(_pRefs, this);
+        _interactionController = new P_InteractionController(_pRefs, this);
         _attackController = new P_AttackController(_pRefs, this);
         _visualHandler = new P_VisualHandler(_pRefs, this);
 
         AddComponent(_being);
         AddComponent(_cameraController);
         AddComponent(_movementController);
+        AddComponent(_interactionController);
         AddComponent(_attackController);
         AddComponent(_visualHandler);
 

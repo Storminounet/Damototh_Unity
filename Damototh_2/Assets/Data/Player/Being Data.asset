@@ -14,8 +14,8 @@ MonoBehaviour:
   _maxHealth: 100
   _startHealth: 100
   _healthRegenPerSecond: 1
-  _maxStunResistance: 100
-  _startStunResistance: 100
+  _maxStunResistance: 20
+  _startStunResistance: 20
   _stunResistanceRegenPerSecond: 1
   _stunTimeAtNoHealth: 1
   _stunTimeAtFullHealth: 1

@@ -8,6 +8,7 @@ public class WorldData : DataSingleton<WorldData>
     [Header("Layers")]
     [Space]
     [SerializeField] private LayerMask _defaultSolidLayer;
+    [SerializeField] private LayerMask _interactableLayer;
 
     private float _time;
     private float _deltaTime;
@@ -21,6 +22,7 @@ public class WorldData : DataSingleton<WorldData>
     }
 
     public static LayerMask DefaultSolidLayer { get { return ActiveData._defaultSolidLayer; } }
+    public static LayerMask InteractableLayer { get { return ActiveData._interactableLayer; } }
 
     public static float Time { get { return ActiveData._time; } }
     public static float DeltaTime { get { return ActiveData._deltaTime; } }
