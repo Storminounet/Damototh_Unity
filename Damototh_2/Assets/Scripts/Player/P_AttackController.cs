@@ -35,7 +35,7 @@ public class P_AttackController : P_Component
 
     public override void MainUpdate()
     {
-        if (master.CanPerformActions == false)
+        if (master.CanPerformActions == false && _currentAttackState != AttackState.ComboRecovering)
         {
             return;
         }
