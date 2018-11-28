@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7905672be27f40e4f994d6a51758507e, type: 3}
+  m_Name: Attack Data
+  m_EditorClassIdentifier: 
+  _lightAttack_1:
+    _model: {fileID: 1467977577522528, guid: 13dcd6488513c954991e1cbe3346ac02, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides:
+    - _velocity: {x: 0, y: 0, z: 5}
+      _duration: 0.05
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 1
+  _lightAttack_2:
+    _model: {fileID: 1467977577522528, guid: 49829026ebc490140ae24bcad258f938, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 1
+  _lightAttack_3:
+    _model: {fileID: 1467977577522528, guid: 10517e2196833654e8158edbe42be74d, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 5
+    _stunPower: 5
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 0
+  _heavyAttack_1:
+    _model: {fileID: 1467977577522528, guid: 087adcc4ab873764b93bb070bd8b983b, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 5
+    _stunPower: 0
+    _healthCost: 10
+    _maximumEnemyNumberHit: 1
+    _canCombo: 1
+  _heavyAttack_2:
+    _model: {fileID: 1467977577522528, guid: 54277dbd9fe21384ea942af9cd3a4379, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 0
+    _stunPower: 0
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 1
+  _heavyAttack_3:
+    _model: {fileID: 1467977577522528, guid: 39769ea57950d5c4b95f0342534e96e7, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0.1
+      _attackTime: 0.1
+      _forcedRecoverTime: 0.1
+      _comboRecoverTime: 0.2
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 0
+    _stunPower: 0
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 0
+  _hydraAttackOne:
+    _model: {fileID: 1467977577522528, guid: 7d6672bc73498f84b955ea70889e9a13, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0
+      _attackTime: 0
+      _forcedRecoverTime: 0
+      _comboRecoverTime: 0
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 0
+    _stunPower: 0
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 0
+  _hydraAttackTwo:
+    _model: {fileID: 1467977577522528, guid: 63f690c4a1886534eb8588eaa6ff536b, type: 2}
+    _animations:
+      _castAnim: {fileID: 0}
+      _attackAnim: {fileID: 0}
+      _forcedRecoverAnim: {fileID: 0}
+      _comboRecoverAnim: {fileID: 0}
+    _timings:
+      _castTime: 0
+      _attackTime: 0
+      _forcedRecoverTime: 0
+      _comboRecoverTime: 0
+    _velocityOverrideInitialWait: 0
+    _attackVelocityOverrides: []
+    _damages: 0
+    _stunPower: 0
+    _healthCost: 0
+    _maximumEnemyNumberHit: 1
+    _canCombo: 0
