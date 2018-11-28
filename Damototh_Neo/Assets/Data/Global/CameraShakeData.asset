@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab53ca1cfa4e5d419a3924ff07eed9b, type: 3}
+  m_Name: CameraShakeData
+  m_EditorClassIdentifier: 
+  _attackHitIntensity: 0.25
+  _attackHitDamagesFactor: 0.05
+  _attackHitDuration: 0.2
+  _attackHitTickDuration: 0.025
+  _attackHitTickLerpSpeed: 0.3
+  _attackHitCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.617268
+      outSlope: -2.617268
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.031651355
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.02354746
+      outSlope: -0.02354746
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10055208
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
