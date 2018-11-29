@@ -14,14 +14,83 @@ MonoBehaviour:
   _controllerType: 2
   _controllerId: 1
   _shortcuts:
-    k_MoveForward: 122
-    k_MoveBackward: 115
-    k_MoveRight: 100
-    k_MoveLeft: 113
-    k_Sprint: 304
-    k_Dodge: 119
-    k_AutoRotate: 99
-    k_Lock: 97
+    k_MoveForward:
+      _inputType: 1
+      _inputMode: 0
+      _key: 122
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_MoveBackward:
+      _inputType: 1
+      _inputMode: 0
+      _key: 115
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_MoveRight:
+      _inputType: 1
+      _inputMode: 0
+      _key: 100
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_MoveLeft:
+      _inputType: 1
+      _inputMode: 0
+      _key: 113
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_Sprint:
+      _inputType: 1
+      _inputMode: 1
+      _key: 304
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_Dodge:
+      _inputType: 1
+      _inputMode: 1
+      _key: 306
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_AutoRotate:
+      _inputType: 1
+      _inputMode: 1
+      _key: 99
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_LockUp:
+      _inputType: 1
+      _inputMode: 2
+      _key: 97
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_LockDown:
+      _inputType: 1
+      _inputMode: 1
+      _key: 97
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_LockLeft:
+      _inputType: 2
+      _inputMode: 1
+      _key: 0
+      _mouseButtonId: 0
+      _wheelDirection: 1
+      Opened: 0
+    k_LockRight:
+      _inputType: 2
+      _inputMode: 1
+      _key: 0
+      _mouseButtonId: 0
+      _wheelDirection: 2
+      Opened: 0
     k_LightAttack:
       _inputType: 0
       _inputMode: 1
@@ -39,27 +108,35 @@ MonoBehaviour:
     k_HydraAttackOne:
       _inputType: 1
       _inputMode: 1
-      _key: 101
+      _key: 114
       _mouseButtonId: 0
       _wheelDirection: 0
       Opened: 0
     k_HydraAttackTwo:
       _inputType: 1
       _inputMode: 1
-      _key: 103
+      _key: 102
+      _mouseButtonId: 0
+      _wheelDirection: 0
+      Opened: 0
+    k_Interact:
+      _inputType: 1
+      _inputMode: 1
+      _key: 101
       _mouseButtonId: 0
       _wheelDirection: 0
       Opened: 0
     c_MoveVerticalAxis: 1
     c_MoveHorizontalAxis: 0
     c_Sprint: 12
-    c_Dodge: 3
+    c_Dodge: 0
     c_AutoRotate: 11
     c_Lock: 14
     c_LightAttack: 9
     c_HeavyAttack: 8
     c_HydraAttackOne: 2
     c_HydraAttackTwo: 1
+    c_Interact: 3
   _mouseSensitivity: 1
   _ps4Sensitivity:
     _leftStick:

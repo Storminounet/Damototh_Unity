@@ -14,21 +14,27 @@ public class P_InputData : ScriptableObject
     public class ShortcutData
     {
         [Header("Keyboard")]
-        [SerializeField] private KeyCode k_MoveForward;
-        [SerializeField] private KeyCode k_MoveBackward;
-        [SerializeField] private KeyCode k_MoveRight;
-        [SerializeField] private KeyCode k_MoveLeft;
+        [SerializeField] private ComputerInput k_MoveForward;
+        [SerializeField] private ComputerInput k_MoveBackward;
+        [SerializeField] private ComputerInput k_MoveRight;
+        [SerializeField] private ComputerInput k_MoveLeft;
         [Space]
-        [SerializeField] private KeyCode k_Sprint;
-        [SerializeField] private KeyCode k_Dodge;
+        [SerializeField] private ComputerInput k_Sprint;
+        [SerializeField] private ComputerInput k_Dodge;
         [Space]
-        [SerializeField] private KeyCode k_AutoRotate;
-        [SerializeField] private KeyCode k_Lock;
+        [SerializeField] private ComputerInput k_AutoRotate;
+        [SerializeField] private ComputerInput k_LockUp;
+        [SerializeField] private ComputerInput k_LockDown;
+        [SerializeField] private ComputerInput k_LockLeft;
+        [SerializeField] private ComputerInput k_LockRight;
         [Space]
         [SerializeField] private ComputerInput k_LightAttack;
         [SerializeField] private ComputerInput k_HeavyAttack;
         [SerializeField] private ComputerInput k_HydraAttackOne;
         [SerializeField] private ComputerInput k_HydraAttackTwo;
+        [Space]
+        [SerializeField] private ComputerInput k_Interact;
+
 
         [Header("Controller")]
         [SerializeField] private ControllerAxis c_MoveVerticalAxis;
@@ -43,23 +49,30 @@ public class P_InputData : ScriptableObject
         [SerializeField] private ControllerButton c_HeavyAttack;
         [SerializeField] private ControllerButton c_HydraAttackOne;
         [SerializeField] private ControllerButton c_HydraAttackTwo;
+        [Space]
+        [SerializeField] private ControllerButton c_Interact;
 
         //Keyboard
-        public KeyCode K_MoveForward { get { return k_MoveForward; } }
-        public KeyCode K_MoveBackward { get { return k_MoveBackward; } }
-        public KeyCode K_MoveRight { get { return k_MoveRight; } }
-        public KeyCode K_MoveLeft { get { return k_MoveLeft; } }
+        public ComputerInput K_MoveForward { get { return k_MoveForward; } }
+        public ComputerInput K_MoveBackward { get { return k_MoveBackward; } }
+        public ComputerInput K_MoveRight { get { return k_MoveRight; } }
+        public ComputerInput K_MoveLeft { get { return k_MoveLeft; } }
 
-        public KeyCode K_Sprint { get { return k_Sprint; } }
-        public KeyCode K_Dodge { get { return k_Dodge; } }
-        public KeyCode K_AutoRotate { get { return k_AutoRotate; } }
-        public KeyCode K_Lock { get { return k_Lock; } }
+        public ComputerInput K_Sprint { get { return k_Sprint; } }
+        public ComputerInput K_Dodge { get { return k_Dodge; } }
+
+        public ComputerInput K_AutoRotate { get { return k_AutoRotate; } }
+        public ComputerInput K_LockUp { get { return k_LockUp; } }
+        public ComputerInput K_LockDown { get { return k_LockDown; } }
+        public ComputerInput K_LockLeft { get { return k_LockLeft; } }
+        public ComputerInput K_LockRight { get { return k_LockRight; } }
 
         public ComputerInput K_LightAttack { get { return k_LightAttack; } }
         public ComputerInput K_HeavyAttack { get { return k_HeavyAttack; } }
         public ComputerInput K_HydraAttackOne { get { return k_HydraAttackOne; } }
         public ComputerInput K_HydraAttackTwo { get { return k_HydraAttackTwo; } }
 
+        public ComputerInput K_Interact { get { return k_Interact; } }
 
         //Controller
         public ControllerAxis C_MoveVerticalAxis { get { return c_MoveVerticalAxis; } }
@@ -74,6 +87,8 @@ public class P_InputData : ScriptableObject
         public ControllerButton C_HeavyAttack { get { return c_HeavyAttack; } }
         public ControllerButton C_HydraAttackOne { get { return c_HydraAttackOne; } }
         public ControllerButton C_HydraAttackTwo { get { return c_HydraAttackTwo; } }
+
+        public ControllerButton C_Interact { get { return c_Interact; } }
 
     }
 
@@ -154,6 +169,11 @@ public class P_InputData : ScriptableObject
                 _controllerId = 1;
             }
         }
+    }
+    [ContextMenu("BITE")]
+    private void BITE()
+    {
+        Debug.Log(Shortcuts.K_MoveForward.Key);
     }
 #endif
 }

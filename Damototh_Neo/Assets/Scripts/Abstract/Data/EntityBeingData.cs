@@ -26,7 +26,6 @@ public abstract class EntityBeingData : ScriptableObject
     [Space]
     [SerializeField] private float _knockbackFactor = 1;
 
-
     public float MaxHealth { get { return _maxHealth; } }
     public float StartHealth { get { return _startHealth; } }
     public float HealthRegenPerSecond { get { return _healthRegenPerSecond; } }

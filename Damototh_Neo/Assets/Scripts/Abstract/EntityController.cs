@@ -33,6 +33,7 @@ public class EntityController : MonoBehaviour
 
     public string Name { get { return _entityName; } }
     public EntityFaction Faction { get { return _faction; } }
+    public LivingState LivingState { get { return Being.LivingState; } }
 
     public EntityReferences Refs { get { return refs; } }
     public EntityBeingData BData { get { return Refs.BeingData; } }

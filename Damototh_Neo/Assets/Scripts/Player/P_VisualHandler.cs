@@ -48,6 +48,7 @@ public class P_VisualHandler : P_Component
             VData.RotationSpeed * WorldData.DeltaTime);
     }
 
+
     //Utilities
     private float GetCurrentDisplacementSpeed()
     {
@@ -61,10 +62,37 @@ public class P_VisualHandler : P_Component
         }
     }
 
+    private void SpawnDrinkFX()
+    {
+        Transform parent;
+        if (master.InteractionController.SelectedEntity == null)
+        {
+            parent = master.InteractionController.SelectedInteractable.mono.transform;
+        }
+        else
+        {
+            parent = master.InteractionController.SelectedEntity.Refs.Collision.transform;
+        }
+
+        DrinkFX fx = Object.Instantiate(
+            VData.DrinkBloodFXModel,
+            ((IDrinkable)master.InteractionController.SelectedInteractable).DrinkPosition,
+            Quaternion.identity,
+            parent).GetComponent<DrinkFX>();
+
+
+        fx.StartFX(pRefs.DrinkFXTarget, master.IsInCombat);
+    }
+
     //Events
     public void OnFeetHeightChanged(float heightDifference)
     {
         _currentYOffset -= heightDifference;
         _currentYOffset = Mathf.Clamp(_currentYOffset, -VData.MaxDisplacement, VData.MaxDisplacement);
+    }
+
+    public void OnDrink()
+    {
+        SpawnDrinkFX();
     }
 }

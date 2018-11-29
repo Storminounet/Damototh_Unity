@@ -61,7 +61,6 @@ public class P_CameraController : P_Component
         ApplyRotations();
         ApplyFOV();
     }
-
     private void CheckLock()
     {
         if (master.LockDown == true)
@@ -171,7 +170,6 @@ public class P_CameraController : P_Component
     {
         UpdatePosition();
     }
-
     private void UpdatePosition()
     {
         pRefs.CamFollower.position = pRefs.VisualBody.position + pRefs.CamTarget.localPosition;

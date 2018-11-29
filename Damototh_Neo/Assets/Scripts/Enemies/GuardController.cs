@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class GuardController : EntityController, IInteractable
+public class GuardController : EntityController, IDrinkable
 {
 #if UNITY_EDITOR
     [SerializeField] private bool _displayVisionCone = false;
@@ -31,7 +31,12 @@ public class GuardController : EntityController, IInteractable
     public bool CanBeInteracted { get { return _canBeInteracted; } }
     public InteractableType InteractableType { get { return _interactableType; } }
 
+    public float DrinkableBlood { get { return BeingData.DrinkableBlood; } }
+
     public Vector3 InteractPosition { get { return _gRefs.InteractTransform.position; } }
+    public Vector3 DrinkPosition { get { return _gRefs.Collision.transform.position + _gRefs.Collision.transform.TransformVector(_gRefs.Collision.center); } }
+
+    public MonoBehaviour mono { get { return this; } }
 
     protected override void Awake()
     {
@@ -54,6 +59,8 @@ public class GuardController : EntityController, IInteractable
     public override void OnDeath()
     {
         _canBeInteracted = true;
+        refs.Rigidbody.isKinematic = true;
+        Utilities.SetLayerOfAllChildrens(transform, LayerMask.NameToLayer("Interactable"));
     }
 
     public void Interact()
@@ -64,7 +71,7 @@ public class GuardController : EntityController, IInteractable
         }
 
         _canBeInteracted = false;
-        WorldManager.OnEntityDrank(this);
+        Visual.OnDrunk();
     }
 
 #if UNITY_EDITOR

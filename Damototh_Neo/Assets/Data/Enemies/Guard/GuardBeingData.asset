@@ -20,3 +20,4 @@ MonoBehaviour:
   _stunTimeAtNoHealth: 1
   _stunTimeAtFullHealth: 1
   _knockbackFactor: 1
+  _drinkableBlood: 20

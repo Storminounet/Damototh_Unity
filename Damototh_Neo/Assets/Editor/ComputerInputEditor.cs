@@ -54,7 +54,7 @@ public class ComputerInputEditorEditor : PropertyDrawer
                     mouseButtonid.intValue = EditorGUI.IntField(pos, "Mouse Button", mouseButtonid.intValue);
                     break;
                 case ComputerInputType.Keyboard:
-                    keyboardKey.enumValueIndex = (int)((KeyCode)EditorGUI.EnumPopup(pos, "Key", (KeyCode)keyboardKey.enumValueIndex));
+                    keyboardKey.intValue = (int)((KeyCode)EditorGUI.EnumPopup(pos, "Key", (KeyCode)keyboardKey.intValue));
                     break;
                 case ComputerInputType.Wheel:
                     wheelDirection.enumValueIndex = (int)((InputManager.InputState)EditorGUI.EnumPopup(pos, "Wheel Direction", (InputManager.InputState)wheelDirection.enumValueIndex));

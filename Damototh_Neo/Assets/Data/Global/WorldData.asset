@@ -14,3 +14,7 @@ MonoBehaviour:
   _defaultSolidLayer:
     serializedVersion: 2
     m_Bits: 1
+  _interactableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _transparentMat: {fileID: 2100000, guid: 37a211b1b72b3ef4db3cdb816f9930e3, type: 2}

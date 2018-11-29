@@ -13,6 +13,8 @@ public enum InteractableType
 
 public interface IInteractable 
 {
+    MonoBehaviour mono { get; }
+    string Name { get; }
     bool CanBeInteracted { get; }
     InteractableType InteractableType { get; }
 
