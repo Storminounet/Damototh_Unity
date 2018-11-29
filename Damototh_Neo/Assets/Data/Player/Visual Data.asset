@@ -15,3 +15,5 @@ MonoBehaviour:
   _displacementSpeed: 3
   _dodgeDisplacementSpeed: 9
   _rotationSpeed: 720
+  _drinkBloodFXModel: {fileID: 1079582389178296, guid: 2659e9fddc9c7454ca1cdcdce4b24031,
+    type: 2}

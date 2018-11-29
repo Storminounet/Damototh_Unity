@@ -30,6 +30,7 @@ public class P_References : EntityReferences
     [Space]
     [SerializeField] private Transform _interactCircle;
     [SerializeField] private Transform _velocitySpace;
+    [SerializeField] private Transform _drinkFXTarget;
     [SerializeField] private Camera _camera;
 
     private P_BeingData _playerBeingData;
@@ -55,10 +56,9 @@ public class P_References : EntityReferences
 
     public Transform RotationCalculator { get { return _rotationCalculator; } }
 
-
-
     public Transform InteractCircle { get { return _interactCircle; } }
     public Transform VelocitySpace { get { return _velocitySpace; } }
+    public Transform DrinkFXTarget { get { return _drinkFXTarget; } }
     public Camera Camera { get { return _camera; } }
 
 

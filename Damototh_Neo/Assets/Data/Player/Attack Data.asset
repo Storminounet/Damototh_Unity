@@ -27,7 +27,7 @@ MonoBehaviour:
     _attackVelocityOverrides:
     - _velocity: {x: 0, y: 0, z: 5}
       _duration: 0.05
-    _damages: 5
+    _damages: 25
     _stunPower: 5
     _healthCost: 0
     _maximumEnemyNumberHit: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
       _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
-    _damages: 5
+    _damages: 25
     _stunPower: 5
     _healthCost: 0
     _maximumEnemyNumberHit: 1
@@ -65,7 +65,7 @@ MonoBehaviour:
       _comboRecoverTime: 0.2
     _velocityOverrideInitialWait: 0
     _attackVelocityOverrides: []
-    _damages: 5
+    _damages: 30
     _stunPower: 5
     _healthCost: 0
     _maximumEnemyNumberHit: 1

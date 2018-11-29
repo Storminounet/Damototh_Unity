@@ -10,9 +10,11 @@ public class P_PlayerController : EntityController
     [ReadOnly] public MovingState e_MovingState;
     [ReadOnly] public AttackState e_AttackState;
     [ReadOnly] public string e_CurrentAttackName;
+    [ReadOnly] public string e_selectedInteractableName;
 #endif
 
     private bool _canPerformActions = true;
+    private bool _isInCombat = false;
 
     private P_References _pRefs;
     private P_Being _being;
@@ -46,8 +48,8 @@ public class P_PlayerController : EntityController
     public bool InputingMovement { get { return InputManager.InputingMovement; } }
     public bool InputingLook { get { return InputManager.InputingLook; } }
 
-    public float MoveInputMagntiude { get { return InputManager.MoveInputMagntiude; } }
-    public float LookInputMagntiude { get { return InputManager.LookInputMagntiude; } }
+    public float MoveInputMagntiude { get { return InputManager.MoveInputMagnitude; } }
+    public float LookInputMagntiude { get { return InputManager.LookInputMagnitude; } }
 
     public Vector2 MoveInput { get { return InputManager.MoveInput; } }
     public Vector2 MoveInputNormalized { get { return InputManager.MoveInputNormalized; } }
@@ -56,11 +58,9 @@ public class P_PlayerController : EntityController
 
     //Others
     public bool CanPerformActions { get { return _canPerformActions; } }
+    public bool IsInCombat { get { return _isInCombat; } }
     //Useful for components end
     #endregion
-
-    //Being
-    public LivingState LivingState { get { return Being.LivingState; } }
 
     //Move
     public MovingState MovingState { get { return MovementController.MovingState; } }
@@ -80,6 +80,11 @@ public class P_PlayerController : EntityController
     public bool HeavyAttack { get { return InputManager.HeavyAttack; } }
     public bool HydraAttackOne { get { return InputManager.HydraAttackOne; } }
     public bool HydraAttackTwo { get { return InputManager.HydraAttackTwo; } }
+
+    //Interaction
+    public InteractingState InteractingState { get { return InteractionController.InteractingState; } }
+    public bool Interact { get { return InputManager.Interact; } }
+
 
 
     protected override void Awake()
@@ -126,7 +131,8 @@ public class P_PlayerController : EntityController
             MovingState == MovingState.VelocityOverriden ||
             AttackState != AttackState.None ||
             LivingState == LivingState.Dead ||
-            LivingState == LivingState.Stunned)
+            LivingState == LivingState.Stunned ||
+            InteractingState != InteractingState.None)
         {
             _canPerformActions = false;
         }
@@ -170,6 +176,21 @@ public class P_PlayerController : EntityController
     {
         _movementController.OnStopVelocityOverride();
     }
+    public void OnInteract(IInteractable interactable)
+    {
+        _movementController.OnInteract(interactable);
+    }
+    public void OnDrinkCorpse(EntityController corpse)
+    {
+        VisualHandler.OnDrink();
+        Being.AddHealth(((IDrinkable)corpse).DrinkableBlood);
+        WorldManager.OnEntityDrank(corpse);
+    }
+    public void OnDrinkThing(IDrinkable drink)
+    {
+        VisualHandler.OnDrink();
+        Being.AddHealth(drink.DrinkableBlood);
+    }
 
     #region Editor Only
 #if UNITY_EDITOR
@@ -191,6 +212,14 @@ public class P_PlayerController : EntityController
         else
         {
             e_CurrentAttackName = AttackController.CurrentAttack.Model.name;
+        }
+        if (InteractionController.SelectingSomething == false)
+        {
+            e_selectedInteractableName = "None";
+        }
+        else
+        {
+            e_selectedInteractableName = InteractionController.SelectedInteractable.Name;
         }
     }
 

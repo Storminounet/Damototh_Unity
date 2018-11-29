@@ -51,7 +51,7 @@ public class GuardBeing : GuardComponent, IEntityBeing
 
     private void DeathUpdate()
     {
-        Refs.PhysicBody.eulerAngles = Vector3.MoveTowards(Refs.PhysicBody.eulerAngles, Refs.PhysicBody.eulerAngles.SetX(90f), Time.deltaTime * 90f);
+        Refs.Collision.transform.eulerAngles = Vector3.MoveTowards(Refs.Collision.transform.eulerAngles, Refs.PhysicBody.eulerAngles.SetX(90f), Time.deltaTime * 90f);
     }
 
     public void AddHealth(float amount)

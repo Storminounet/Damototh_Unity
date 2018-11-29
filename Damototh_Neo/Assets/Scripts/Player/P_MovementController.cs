@@ -17,6 +17,7 @@ public class P_MovementController : P_Component
 {
     public P_MovementController(P_References playerReferences, P_PlayerController master) : base(playerReferences, master) { }
 
+    public P_MovementData movementdata { get { return pRefs.MovementData; } }
     private bool _grounded;
     private bool _askingSprint;
 
@@ -266,6 +267,7 @@ public class P_MovementController : P_Component
         {
             UpdateMovingState();
         }
+
         UpdateFeetHeightSpeedFactor();
         UpdateCurrentSpeedFactor();
 
@@ -277,7 +279,7 @@ public class P_MovementController : P_Component
 
         UpdateFeetHeight();
 
-        if (_grounded == true)
+        if (_grounded == true && master.CanPerformActions == true)
         {
             CheckForSprint();
             CheckForDodge();
@@ -540,6 +542,11 @@ public class P_MovementController : P_Component
     public void OnAttackStart(AttackData attack)
     {
         ComputeMoveVector();
+    }
+
+    public void OnInteract(IInteractable interactable)
+    {
+        _lastMoveDirection = (interactable.InteractPosition - Position).SetY(0);
     }
 
     public void OnStartVelocityOverride(Vector3 velocity, bool isLocalOverride = false)

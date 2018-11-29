@@ -53,22 +53,16 @@ public enum ComputerInputType
 [System.Serializable]
 public class ComputerInput
 {
-    public enum WheelDirectionEnum
-    {
-        Up,
-        Down
-    }
-
     [SerializeField] private ComputerInputType _inputType;
     [SerializeField] private InputManager.InputMode _inputMode;
-    [SerializeField] private KeyCode _key;
+    [SerializeField] private int _key;
     [SerializeField] private int _mouseButtonId;
-    [SerializeField] private WheelDirectionEnum _wheelDirection;
+    [SerializeField] private InputManager.InputState _wheelDirection;
 
     public ComputerInputType InputType { get { return _inputType; } }
-    public KeyCode Key { get { return _key; } }
+    public int Key { get { return _key; } }
     public int MouseButtonId { get { return _mouseButtonId; } }
-    public WheelDirectionEnum WheelDirection { get { return _wheelDirection; } }
+    public InputManager.InputState WheelDirection { get { return _wheelDirection; } }
 
 #if UNITY_EDITOR
     public bool Opened;
@@ -93,22 +87,22 @@ public class ComputerInput
                 switch (_inputMode)
                 {
                     case InputManager.InputMode.Held:
-                        return Input.GetKey(_key);
+                        return Input.GetKey((KeyCode)_key);
                     case InputManager.InputMode.Down:
-                        return Input.GetKeyDown(_key);
+                        return Input.GetKeyDown((KeyCode)_key);
                     case InputManager.InputMode.Up:
-                        return Input.GetKeyUp(_key);
+                        return Input.GetKeyUp((KeyCode)_key);
                 }
                 break;
             case ComputerInputType.Wheel:
                 bool cur = false, last = false;
                 switch (_wheelDirection)
                 {
-                    case WheelDirectionEnum.Up:
+                    case InputManager.InputState.Positive:
                         cur = InputManager.WheelState == InputManager.InputState.Positive;
                         last = InputManager.LastWheelState == InputManager.InputState.Positive;
                         break;
-                    case WheelDirectionEnum.Down:
+                    case InputManager.InputState.Negative:
                         cur = InputManager.WheelState == InputManager.InputState.Negative;
                         last = InputManager.LastWheelState == InputManager.InputState.Negative;
                         break;
@@ -142,6 +136,7 @@ public class InputManager : Singleton<InputManager>
         Down = 1,
         Up = 2
     }
+
     public enum InputState
     {
         None,
@@ -172,11 +167,13 @@ public class InputManager : Singleton<InputManager>
     public static bool HeavyAttack { get { return _heavyAttack; } }
     public static bool HydraAttackOne { get { return _hydraAttackOne; } }
     public static bool HydraAttackTwo { get { return _hydraAttackTwo; } }
+
+    public static bool Interact { get { return _interact; } }
     #endregion
 
 
-    public static float MoveInputMagntiude { get { return _moveInputMagnitude; } }
-    public static float LookInputMagntiude { get { return _lookInputMagnitude; } }
+    public static float MoveInputMagnitude { get { return _moveInputMagnitude; } }
+    public static float LookInputMagnitude { get { return _lookInputMagnitude; } }
 
     public static Vector2 MoveInput { get { return _moveInput; } }
     public static Vector2 MoveInputNormalized { get { return _moveInput; } }
@@ -205,6 +202,8 @@ public class InputManager : Singleton<InputManager>
     private static bool _heavyAttack;
     private static bool _hydraAttackOne;
     private static bool _hydraAttackTwo;
+
+    private static bool _interact;
 
 
     private static float _wheelAxis;
@@ -292,19 +291,20 @@ public class InputManager : Singleton<InputManager>
                 _moveInput.x = 0;
                 _moveInput.y = 0;
 
-                if (Input.GetKey(_iData.Shortcuts.K_MoveForward))
+            
+                if (_iData.Shortcuts.K_MoveForward.IsPressed())
                 {
                     _moveInput.y++;
                 }
-                if (Input.GetKey(_iData.Shortcuts.K_MoveBackward))
+                if (_iData.Shortcuts.K_MoveBackward.IsPressed())
                 {
                     _moveInput.y--;
                 }
-                if (Input.GetKey(_iData.Shortcuts.K_MoveRight))
+                if (_iData.Shortcuts.K_MoveRight.IsPressed())
                 {
                     _moveInput.x++;
                 }
-                if (Input.GetKey(_iData.Shortcuts.K_MoveLeft))
+                if (_iData.Shortcuts.K_MoveLeft.IsPressed())
                 {
                     _moveInput.x--;
                 }
@@ -374,20 +374,22 @@ public class InputManager : Singleton<InputManager>
         switch (_iData.ControllerType)
         {
             case ControllerType.Keyboard:
-                _sprint = Input.GetKeyDown(_iData.Shortcuts.K_Sprint);
-                _dodge = Input.GetKeyDown(_iData.Shortcuts.K_Dodge);
+                _sprint = _iData.Shortcuts.K_Sprint.IsPressed();
+                _dodge = _iData.Shortcuts.K_Dodge.IsPressed();
 
-                _autoRotate = Input.GetKeyDown(_iData.Shortcuts.K_AutoRotate);
-                _lockUp = Input.GetKeyUp(_iData.Shortcuts.K_Lock);
-                _lockDown = Input.GetKeyDown(_iData.Shortcuts.K_Lock);
+                _autoRotate = _iData.Shortcuts.K_AutoRotate.IsPressed();
+                _lockUp = _iData.Shortcuts.K_LockUp.IsPressed();
+                _lockDown = _iData.Shortcuts.K_LockDown.IsPressed();
 
-                _lockLeftTarget = _lastWheelState == InputState.None && _wheelState == InputState.Positive;
-                _lockRightTarget = _lastWheelState == InputState.None && _wheelState == InputState.Negative;
+                _lockLeftTarget = _iData.Shortcuts.K_LockLeft.IsPressed();
+                _lockRightTarget = _iData.Shortcuts.K_LockRight.IsPressed();
 
                 _lightAttack = _iData.Shortcuts.K_LightAttack.IsPressed();
                 _heavyAttack = _iData.Shortcuts.K_HeavyAttack.IsPressed();
                 _hydraAttackOne = _iData.Shortcuts.K_HydraAttackOne.IsPressed();
                 _hydraAttackTwo = _iData.Shortcuts.K_HydraAttackTwo.IsPressed();
+
+                _interact = _iData.Shortcuts.K_Interact.IsPressed();
                 break;
             default:
                 _sprint = GetControllerButton(_iData.Shortcuts.C_Sprint, _iData.ControllerId, InputMode.Down);
@@ -405,6 +407,7 @@ public class InputManager : Singleton<InputManager>
                 _hydraAttackOne = GetControllerButton(_iData.Shortcuts.C_HydraAttackOne, _iData.ControllerId, InputMode.Down);
                 _hydraAttackTwo = GetControllerButton(_iData.Shortcuts.C_HydraAttackTwo, _iData.ControllerId, InputMode.Down);
 
+                _interact = GetControllerButton(_iData.Shortcuts.C_Interact, _iData.ControllerId, InputMode.Down);
                 break;
         }
     }
@@ -665,7 +668,7 @@ public class InputManager : Singleton<InputManager>
             return false;
         }
 
-        if (positiveComparison)
+        if (positiveComparison == true)
         {
             switch (InputMode)
             {
