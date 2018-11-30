@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9383b0df916402b4496aec4e1d955aea, type: 3}
   m_Name: Input Data
   m_EditorClassIdentifier: 
-  _controllerType: 2
-  _controllerId: 1
+  _controllerType: 1
+  _controllerId: 0
   _shortcuts:
     k_MoveForward:
       _inputType: 1
