@@ -11,6 +11,7 @@ public class P_VisualHandler : P_Component
     private Vector3 _toLockedVector;
 
     public Quaternion TargetQuaternion { get { return _targetQuaternion; } }
+    public Vector3 ToLockedVector { get { return _toLockedVector; } }
 
     public override void MainUpdate()
     {

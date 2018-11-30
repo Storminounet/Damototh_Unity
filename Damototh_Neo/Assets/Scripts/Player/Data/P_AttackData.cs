@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 
 
@@ -23,15 +26,15 @@ public class AttackData
     [System.Serializable]
     public class AttackAnimations
     {
-        [SerializeField] private Animation _castAnim;
-        [SerializeField] private Animation _attackAnim;
-        [SerializeField] private Animation _forcedRecoverAnim;
-        [SerializeField] private Animation _comboRecoverAnim;
+        [SerializeField] private AnimationClip _castAnim;
+        [SerializeField] private AnimationClip _attackAnim;
+        [SerializeField] private AnimationClip _forcedRecoverAnim;
+        [SerializeField] private AnimationClip _comboRecoverAnim;
 
-        public Animation CastAnim { get { return _castAnim; } }
-        public Animation AttackAnim { get { return _attackAnim; } }
-        public Animation ForcedRecoverAnim { get { return _forcedRecoverAnim; } }
-        public Animation ComboRecoverAnim { get { return _comboRecoverAnim; } }
+        public AnimationClip CastAnim { get { return _castAnim; } }
+        public AnimationClip AttackAnim { get { return _attackAnim; } }
+        public AnimationClip ForcedRecoverAnim { get { return _forcedRecoverAnim; } }
+        public AnimationClip ComboRecoverAnim { get { return _comboRecoverAnim; } }
     }
     [System.Serializable]
     public class AttackVelocityOverride
@@ -58,6 +61,9 @@ public class AttackData
     [SerializeField] private int _maximumEnemyNumberHit = 1;
     [Space]
     [SerializeField] private bool _canCombo;
+    [Space]
+    [SerializeField] private float _feedbackFreezeTime;
+    [SerializeField] private CameraShakeData.OneShotShakeData _cameraShake;
 
     public GameObject Model { get { return _model; } }
     public AttackAnimations Animations { get { return _animations; } }
@@ -74,6 +80,10 @@ public class AttackData
     public int MaximumEnemyNumberHit { get { return _maximumEnemyNumberHit; } }
 
     public bool CanCombo { get { return _canCombo; } }
+
+    public float FeedbackFreezeTime { get { return _feedbackFreezeTime; } }
+
+    public CameraShakeData.OneShotShakeData CameraShake { get { return _cameraShake; } }
 }
 
 [CreateAssetMenu(fileName = "AttackData", menuName = "PlayerData/AttackData", order = 1000)]
@@ -146,3 +156,16 @@ public class P_AttackData : ScriptableObject
         return null;
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(P_AttackData))]
+public class P_AttackDataEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        EditorGUIUtility.labelWidth = 200;
+        base.OnInspectorGUI();
+    }
+}
+#endif

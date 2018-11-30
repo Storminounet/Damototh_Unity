@@ -53,7 +53,7 @@ public class P_CameraController : P_Component
             }
         }
 
-        if (_autoRotating == false)
+        if (_autoRotating == false && master.HitFreezed == false)
         {
             UpdateRotations();
         }
@@ -239,7 +239,7 @@ public class P_CameraController : P_Component
         _locked = false;
         _lockedTransform = null;
 
-        WorldManager.OnPlayerUnlock();
+        OnUnlock();
     }
     private void LockLeftTarget()
     {
@@ -357,5 +357,9 @@ public class P_CameraController : P_Component
         {
             Unlock();
         }
+    }
+    private void OnUnlock()
+    {
+        master.OnCameraUnlock();
     }
 }

@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 198410899252184448}
+  _VData: {fileID: 11400000, guid: 8efba12a4e1e216429bab8197c94cbde, type: 2}
   velocityChangeSpeed: 0.6
   speedOverDistanceFactor: 10
   speedOverDistance:

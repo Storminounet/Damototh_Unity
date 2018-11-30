@@ -60,12 +60,12 @@ public class P_AttackController : P_Component
         if (master.LightAttack)
         {
             _currentAttackId++;
-            StartAttack(AData.GetAttack(P_AttackData.AttackType.Light, _currentAttackId)); 
+            StartAttack(AtData.GetAttack(P_AttackData.AttackType.Light, _currentAttackId)); 
         }
         else if (master.HeavyAttack)
         {
             _currentAttackId++;
-            StartAttack(AData.GetAttack(P_AttackData.AttackType.Heavy, _currentAttackId));
+            StartAttack(AtData.GetAttack(P_AttackData.AttackType.Heavy, _currentAttackId));
         }
     }
 
@@ -92,17 +92,20 @@ public class P_AttackController : P_Component
         _currentAttack = attack;
         _currentAttackState = AttackState.Casting;
 
+        master.OnEnterCastAttackState(attack);
         master.Being.AddHealth(-attack.HealthCost);
 
         yield return new WaitForSeconds(attack.Timings.CastTime);
 
         _currentAttackState = AttackState.Attacking;
+        master.OnEnterAttackState(attack);
 
         InstantiateAttackHitbox(attack);
 
         yield return new WaitForSeconds(attack.Timings.AttackTime);
 
         _currentAttackState = AttackState.ForcedRecovering;
+        master.OnEnterRecoverAttackState(attack);
 
         yield return new WaitForSeconds(attack.Timings.ForcedRecoverTime);
 

@@ -112,6 +112,8 @@ public class P_InteractionController : P_Component
         _interactingState = InteractingState.Drinking;
         yield return new WaitForSeconds(master.IsInCombat ? ItData.InsideCombatDrinkTime : ItData.OutsideCombatDrinkTime);
         _interactingState = InteractingState.None;
+
+        OnEndDrinking();
     }
 
     //Utilities
@@ -125,21 +127,7 @@ public class P_InteractionController : P_Component
             case InteractableType.Mechanism:
                 break;
             case InteractableType.Corpse:
-
-                if (_drinkCoroutine != null)
-                {
-                    master.StopCoroutine(_drinkCoroutine);
-                }
-                master.StartCoroutine(DrinkCoroutine());
-
-                if (_selectedEntity != null)
-                {
-                    master.OnDrinkCorpse(_selectedEntity);
-                }
-                else
-                {
-                    master.OnDrinkThing((IDrinkable)_selectedInteractable);
-                }
+                OnStartDrinking();
                 break;
         }
 
@@ -155,6 +143,31 @@ public class P_InteractionController : P_Component
     }
 
     //Events
+    private void OnStartDrinking()
+    {
+        if (_drinkCoroutine != null)
+        {
+            master.StopCoroutine(_drinkCoroutine);
+        }
+
+        master.StartCoroutine(DrinkCoroutine());
+
+        if (_selectedEntity != null)
+        {
+            master.OnStartDrinkCorpse(_selectedEntity);
+        }
+        else
+        {
+            master.OnStartDrinkThing((IDrinkable)_selectedInteractable);
+        }
+    }
+
+    private void OnEndDrinking()
+    {
+        master.OnEndDrinking();
+    }
+        
+
     private void OnSelectInteractable(IInteractable interactable)
     {
 

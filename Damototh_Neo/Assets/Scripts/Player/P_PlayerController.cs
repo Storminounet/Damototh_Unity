@@ -15,6 +15,7 @@ public class P_PlayerController : EntityController
 
     private bool _canPerformActions = true;
     private bool _isInCombat = false;
+    private bool _hitFreezed = false;
 
     private P_References _pRefs;
     private P_Being _being;
@@ -23,6 +24,7 @@ public class P_PlayerController : EntityController
     private P_InteractionController _interactionController;
     private P_AttackController _attackController;
     private P_VisualHandler _visualHandler;
+    private P_AnimationHandler _animationHandler;
 
     #region Entity Props
     //Refs
@@ -32,9 +34,10 @@ public class P_PlayerController : EntityController
     public P_InputData IpData { get { return pRefs.InputData; } }
     public P_CameraData CData { get { return pRefs.CameraData; } }
     public P_MovementData MData { get { return pRefs.MovementData; } }
-    public P_AttackData AData { get { return pRefs.AttackData; } }
+    public P_AttackData AtData { get { return pRefs.AttackData; } }
     public P_InteractionData ItData { get { return pRefs.InteractionData; } }
     public P_VisualData VData { get { return pRefs.VisualData; } }
+    public P_AnimationData AnData { get { return pRefs.AnimationData; } }
 
     public new P_Being Being { get { return _being; } }
     public P_CameraController CameraController { get { return _cameraController; } }
@@ -42,6 +45,7 @@ public class P_PlayerController : EntityController
     public P_InteractionController InteractionController { get { return _interactionController; } }
     public P_AttackController AttackController { get { return _attackController; } }
     public P_VisualHandler VisualHandler { get { return _visualHandler; } }
+    public P_AnimationHandler AnimationHandler { get { return _animationHandler; } }
 
     //Useful for components
     //Inputs
@@ -59,6 +63,7 @@ public class P_PlayerController : EntityController
     //Others
     public bool CanPerformActions { get { return _canPerformActions; } }
     public bool IsInCombat { get { return _isInCombat; } }
+    public bool HitFreezed { get { return _hitFreezed; } }
     //Useful for components end
     #endregion
 
@@ -98,6 +103,7 @@ public class P_PlayerController : EntityController
         _interactionController = new P_InteractionController(_pRefs, this);
         _attackController = new P_AttackController(_pRefs, this);
         _visualHandler = new P_VisualHandler(_pRefs, this);
+        _animationHandler = new P_AnimationHandler(_pRefs, this);
 
         AddComponent(_being);
         AddComponent(_cameraController);
@@ -105,6 +111,7 @@ public class P_PlayerController : EntityController
         AddComponent(_interactionController);
         AddComponent(_attackController);
         AddComponent(_visualHandler);
+        AddComponent(_animationHandler);
 
         AwakeComponents();
     }
@@ -151,9 +158,27 @@ public class P_PlayerController : EntityController
     {
         Being.AddHealth(-damages);
     }
+    public void OnCameraUnlock()
+    {
+        MovementController.OnCameraUnlock();
+        WorldManager.OnPlayerUnlock();
+    }
+
     public override void OnAttackStart(AttackData attack)
     {
         _movementController.OnAttackStart(attack);
+    }
+    public void OnEnterCastAttackState(AttackData attack)
+    {
+        _animationHandler.OnEnterCastState(attack);
+    }
+    public void OnEnterAttackState(AttackData attack)
+    {
+        _animationHandler.OnEnterAttackState(attack);
+    }
+    public void OnEnterRecoverAttackState(AttackData attack)
+    {
+        _animationHandler.OnEnterRecoverState(attack);
     }
     public override void OnEntityHit(EntityController hitEntity, AttackData hitAttack)
     {
@@ -164,6 +189,21 @@ public class P_PlayerController : EntityController
         WorldManager.OnPlayerKill(killedEntity, killingAttack);
         CameraController.OnEntityKilled(killedEntity, killingAttack);
     }
+
+    protected override void OnStartHitFreezeFeedback(AttackData attack)
+    {
+        _hitFreezed = true;
+        base.OnStartHitFreezeFeedback(attack);
+        AnimationHandler.OnStartHitFreezeFeedback();
+    }
+
+    protected override void OnEndHitFreezeFeedback(AttackData attack)
+    {
+        _hitFreezed = false;
+        WorldManager.OnPlayerEndHitFreezeFeedback(attack);
+        AnimationHandler.OnEndHitFreezeFeedback();
+    }
+
     public override void OnDeath()
     {
         CameraController.OnDeath();
@@ -180,16 +220,26 @@ public class P_PlayerController : EntityController
     {
         _movementController.OnInteract(interactable);
     }
-    public void OnDrinkCorpse(EntityController corpse)
+    public void OnStartDrinkCorpse(EntityController corpse)
     {
         VisualHandler.OnDrink();
-        Being.AddHealth(((IDrinkable)corpse).DrinkableBlood);
         WorldManager.OnEntityDrank(corpse);
+
+        Being.OnStartDrinking(
+            ((IDrinkable)corpse).DrinkableBlood,
+            _isInCombat == true ? ItData.InsideCombatDrinkTime : ItData.OutsideCombatDrinkTime);
     }
-    public void OnDrinkThing(IDrinkable drink)
+    public void OnStartDrinkThing(IDrinkable drink)
     {
         VisualHandler.OnDrink();
-        Being.AddHealth(drink.DrinkableBlood);
+
+        Being.OnStartDrinking(
+            drink.DrinkableBlood,
+            _isInCombat == true ? ItData.InsideCombatDrinkTime : ItData.OutsideCombatDrinkTime);
+    }
+    public void OnEndDrinking()
+    {
+        Being.OnEndDrinking();
     }
 
     #region Editor Only

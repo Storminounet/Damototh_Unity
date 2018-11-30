@@ -11,6 +11,7 @@ public class P_References : EntityReferences
     [SerializeField] private P_AttackData _attackData;
     [SerializeField] private P_InteractionData _interactionData;
     [SerializeField] private P_VisualData _visualData;
+    [SerializeField] private P_AnimationData _animationData;
 
     [Header("Camera")]
     [Space]
@@ -32,6 +33,7 @@ public class P_References : EntityReferences
     [SerializeField] private Transform _velocitySpace;
     [SerializeField] private Transform _drinkFXTarget;
     [SerializeField] private Camera _camera;
+    [SerializeField] private Animator _animator;
 
     private P_BeingData _playerBeingData;
      
@@ -42,6 +44,7 @@ public class P_References : EntityReferences
     public P_AttackData AttackData { get { return _attackData; } }
     public P_InteractionData InteractionData { get { return _interactionData; } }
     public P_VisualData VisualData { get { return _visualData; } }
+    public P_AnimationData AnimationData { get { return _animationData; } }
 
 
     public Transform CamTarget { get { return _camTarget; } }
@@ -60,6 +63,7 @@ public class P_References : EntityReferences
     public Transform VelocitySpace { get { return _velocitySpace; } }
     public Transform DrinkFXTarget { get { return _drinkFXTarget; } }
     public Camera Camera { get { return _camera; } }
+    public Animator Animator { get { return _animator; } }
 
 
     private void Awake()

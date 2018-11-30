@@ -349,6 +349,7 @@ public class P_MovementController : P_Component
 
             _moveVector *= _currentSpeedFactor;
             _moveDirection = _moveVector.normalized;
+
             _lastMoveDirection = _moveDirection;
         }
         else
@@ -463,7 +464,11 @@ public class P_MovementController : P_Component
     public float ComputeHitNormalAngle(RaycastHit hit, out RaycastHit rayHit)
     {
         RaycastHit h;
-        Physics.Raycast(hit.point + Vector3.up * 0.001f, Vector3.down, out h, WorldData.DefaultSolidLayer);
+        Vector3 start = 
+            hit.point + 
+            (hit.point - Position).SetY(0) * 0.001f +
+            Vector3.up * 0.001f;
+        Physics.Raycast(start, Vector3.down, out h, WorldData.DefaultSolidLayer);
         rayHit = h;
         return ComputeNormalAngle(h.normal);
     }
@@ -547,6 +552,11 @@ public class P_MovementController : P_Component
     public void OnInteract(IInteractable interactable)
     {
         _lastMoveDirection = (interactable.InteractPosition - Position).SetY(0);
+    }
+
+    public void OnCameraUnlock()
+    {
+        _lastMoveDirection = master.VisualHandler.ToLockedVector.normalized;
     }
 
     public void OnStartVelocityOverride(Vector3 velocity, bool isLocalOverride = false)

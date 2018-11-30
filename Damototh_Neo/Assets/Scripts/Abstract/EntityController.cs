@@ -26,6 +26,8 @@ public class EntityController : MonoBehaviour
     private IEntityBeing _being = null;
     private IEntityIA _IA = null;
 
+    private Coroutine _waitForFreezeEndCoroutine;
+
     protected EntityReferences refs;
 
     public bool HasIA { get { return _hasIA; } }
@@ -123,6 +125,13 @@ public class EntityController : MonoBehaviour
         }
     }
 
+    //Coroutines
+    protected virtual IEnumerator WaitForFreezeEndCoroutine(AttackData attack)
+    {
+        yield return new WaitForSeconds(attack.FeedbackFreezeTime);
+        OnEndHitFreezeFeedback(attack);
+    }
+
     //Utilities
     protected void AddComponent(IEntityComponent component)
     {
@@ -162,6 +171,8 @@ public class EntityController : MonoBehaviour
     }
     public virtual void OnHitSuccessful(EntityController victim, AttackData hitAttack)
     {
+        OnStartHitFreezeFeedback(hitAttack);
+
         if (victim.Being.LivingState == LivingState.Dead)
         {
             OnEntityKilled(victim, hitAttack);
@@ -181,6 +192,21 @@ public class EntityController : MonoBehaviour
     }
     public virtual void OnDeath()
 
+    {
+
+    }
+
+    protected virtual void OnStartHitFreezeFeedback(AttackData attack)
+    {
+        if (_waitForFreezeEndCoroutine != null)
+        {
+            StopCoroutine(_waitForFreezeEndCoroutine);
+        }
+
+        _waitForFreezeEndCoroutine = StartCoroutine(WaitForFreezeEndCoroutine(attack));
+    }
+
+    protected virtual void OnEndHitFreezeFeedback(AttackData attack)
     {
 
     }
@@ -213,14 +239,14 @@ public class EntityController : MonoBehaviour
         {
             Gizmos.color = Color.red;
             float offset = WorldManager.HealthBarSize * (BData.MaxHealth - Being.CurrentHealth) * 0.5f;
-            Gizmos.matrix = Matrix4x4.TRS(Position + Vector3.up * 2.2f + (refs.VisualBody.right * offset), refs.VisualBody.rotation, new Vector3(WorldManager.HealthBarSize * Being.CurrentHealth, 0.1f, 0.01f));
+            Gizmos.matrix = Matrix4x4.TRS(refs.VisualBody.position + Vector3.up * 2.2f + (refs.VisualBody.right * offset), refs.VisualBody.rotation, new Vector3(WorldManager.HealthBarSize * Being.CurrentHealth, 0.1f, 0.01f));
             Gizmos.DrawCube(Vector3.zero, Vector3.one);
         }
         if (WorldManager.SeeStunBar == true)
         {
             Gizmos.color = Color.green;
             float offset = WorldManager.StunBarSize * (BData.MaxStunResistance - Being.CurrentStunResistance) * 0.5f;
-            Gizmos.matrix = Matrix4x4.TRS(Position + Vector3.up * 2.05f + (refs.VisualBody.right * offset), refs.VisualBody.rotation, new Vector3(WorldManager.StunBarSize * Being.CurrentStunResistance, 0.1f, 0.01f));
+            Gizmos.matrix = Matrix4x4.TRS(refs.VisualBody.position + Vector3.up * 2.05f + (refs.VisualBody.right * offset), refs.VisualBody.rotation, new Vector3(WorldManager.StunBarSize * Being.CurrentStunResistance, 0.1f, 0.01f));
             Gizmos.DrawCube(Vector3.zero, Vector3.one);
         }
     }

@@ -14,10 +14,11 @@ public class P_Component : IEntityComponent
     public P_BeingData BData { get { return master.BData; } }
     public P_InputData IpData { get { return master.IpData; } }
     public P_MovementData MData { get { return master.MData; } }
-    public P_AttackData AData { get { return master.AData; } }
+    public P_AttackData AtData { get { return master.AtData; } }
     public P_CameraData CData { get { return master.CData; } }
     public P_InteractionData ItData { get { return master.ItData; } }
     public P_VisualData VData { get { return master.VData; } }
+    public P_AnimationData AnData { get { return master.AnData; } }
 
     public Vector3 Position { get { return master.Position; } set { master.Position = value; } }
     public Quaternion Rotation { get { return master.Rotation; } set { master.Rotation = value; } }

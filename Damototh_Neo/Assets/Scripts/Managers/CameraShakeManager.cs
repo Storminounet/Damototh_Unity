@@ -30,33 +30,54 @@ public class CameraShakeManager : Singleton<CameraShakeManager>
         _hitCameraShakePostProcess = StartCoroutine(HitCameraShakeCoroutine(attack));
     }
 
+    private Vector2 ScreenDirectionToRotationDirection(Vector2 screenDirection)
+    {
+        Vector2 rotDir = new Vector2();
+        rotDir.x = -screenDirection.y;
+        rotDir.y = screenDirection.x;
+        return rotDir;
+    }
+
     //Coroutines
     private IEnumerator HitCameraShakeCoroutine(AttackData attack)
     {
         Vector2 angles = Vector2.zero;
         float count = 0f, progress = 0f;
-        while (count < _data.AttackHitDuration)
+        float updateCount = 0f;
+        Vector2 shakeDirection = ScreenDirectionToRotationDirection(Vector2.down);
+        bool shakePositive = true;
+
+        CameraShakeData.OneShotShakeData shake = attack.CameraShake;
+
+        while (count < shake.ShakeDuration)
         {
-            count += _data.AttackHitTickDuration;
+            count += WorldData.DeltaTime;
+            updateCount += WorldData.DeltaTime;
 
-            progress = count / _data.AttackHitDuration;
-            progress = _data.AttackHitCurve.Evaluate(progress);
+            if (updateCount > shake.TickDuration)
+            {
+                updateCount -= shake.TickDuration;
 
-            angles = Random.insideUnitCircle.normalized * progress;
-            angles *= (_data.AttackHitIntensity + attack.Damages * _data.AttackHitDamagesFactor);
-            transform.localRotation = Quaternion.Euler(angles);
+                progress = count / shake.ShakeDuration;
+                progress = shake.IntensityCurve.Evaluate(progress);
 
-            yield return new WaitForSeconds(_data.AttackHitTickDuration);
+                angles =
+                    shakeDirection *
+                    progress *
+                    shake.ShakeIntensity *
+                    (shakePositive == true ? 1 : -1);
+
+                shakePositive = !shakePositive;
+            }
+
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(angles), shake.TickLerpSpeed);
+
+            yield return null;
         }
     }
 
     //Static Events
-    public static void OnPlayerHitEntity(AttackData attack)
-    {
-        Instance.StartHitCameraShake(attack);
-    }
-
-    public static void OnPlayerKillEntity(AttackData attack)
+    public static void OnPlayerEndHitFreezeFeedback(AttackData attack)
     {
         Instance.StartHitCameraShake(attack);
     }

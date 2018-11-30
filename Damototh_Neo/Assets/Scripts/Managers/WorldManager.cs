@@ -70,16 +70,19 @@ public class WorldManager : Singleton<WorldManager>
     public static void OnPlayerHit(EntityController hitEntity, AttackData hitAttack)
     {
         PostProcessManager.OnPlayerHitEntity();
-        CameraShakeManager.OnPlayerHitEntity(hitAttack);
 
         IAManager.OnEntityHit(Player, hitEntity, hitAttack);
     }
     public static void OnPlayerKill(EntityController killedEntity, AttackData killAttack)
     {
         PostProcessManager.OnPlayerKillEntity();
-        CameraShakeManager.OnPlayerKillEntity(killAttack);
 
         IAManager.OnEntityKill(Player, killedEntity, killAttack);
+    }
+
+    public static void OnPlayerEndHitFreezeFeedback(AttackData attack)
+    {
+        CameraShakeManager.OnPlayerEndHitFreezeFeedback(attack);
     }
 
 

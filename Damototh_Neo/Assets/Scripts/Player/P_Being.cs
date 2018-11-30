@@ -15,6 +15,7 @@ public class P_Being : P_Component, IEntityBeing
 
     private LivingState _livingState = LivingState.Living;
     private Coroutine _stunCoroutine;
+    private Coroutine _drinkCoroutine;
 
     public float CurrentHealth { get { return _currentHealth; } }
     public float CurrentStunResistance { get { return _currentStunResistance; } }
@@ -53,7 +54,6 @@ public class P_Being : P_Component, IEntityBeing
             AddHealth(BData.HealthRegenPerSecond * WorldData.DeltaTime);
         }
     }
-
     private void ApplyStunResistanceRegen()
     {
         if (_livingState == LivingState.Living)
@@ -62,6 +62,31 @@ public class P_Being : P_Component, IEntityBeing
         }
     }
 
+    //Coroutines
+    private IEnumerator StunCoroutine()
+    {
+        _livingState = LivingState.Stunned;
+        yield return new WaitForSeconds(Mathf.Lerp(BData.StunTimeAtNoHealth, BData.StunTimeAtFullHealth, _currentHealth / BData.MaxHealth));
+        _livingState = LivingState.Living;
+
+        _stunCoroutine = null;
+    }
+    private IEnumerator DrinkCoroutine(float drinkAmount, float time)
+    {
+        float count = 0f;
+
+        while (count < time)
+        {
+            count += WorldData.DeltaTime;
+            AddHealth(drinkAmount * WorldData.DeltaTime / time);
+
+            yield return null;
+        }
+
+        _drinkCoroutine = null;
+    }
+
+    //Utilities
     public void AddHealth(float amount)
     {
         _currentHealth = Mathf.Clamp(_currentHealth + amount, 0f, BData.MaxHealth);
@@ -81,7 +106,6 @@ public class P_Being : P_Component, IEntityBeing
             Stun();
         }
     }
-
     public void TakeHit(AttackData attack)
     {
         AddHealth(-attack.Damages);
@@ -91,7 +115,6 @@ public class P_Being : P_Component, IEntityBeing
             AddStunResistance(-attack.StunPower);
         }
     }
-
     private void Stun()
     {
         if (_stunCoroutine != null)
@@ -103,21 +126,29 @@ public class P_Being : P_Component, IEntityBeing
 
         AddStunResistance(BData.StartStunResistance);
     }
-
-    private IEnumerator StunCoroutine()
-    {
-        _livingState = LivingState.Stunned;
-        yield return new WaitForSeconds(Mathf.Lerp(BData.StunTimeAtNoHealth, BData.StunTimeAtFullHealth, _currentHealth / BData.MaxHealth));
-        _livingState = LivingState.Living;
-
-        _stunCoroutine = null;
-    }
-
-
     private void Death()
     {
         _livingState = LivingState.Dead;
         master.OnDeath();
+    }
+
+    //Events
+    public void OnStartDrinking(float drinkAmount, float time)
+    {
+        if (_drinkCoroutine != null)
+        {
+            master.StopCoroutine(_drinkCoroutine);
+        }
+
+        _drinkCoroutine = master.StartCoroutine(DrinkCoroutine(drinkAmount, time));
+    }
+
+    public void OnEndDrinking()
+    {
+        if (_drinkCoroutine != null)
+        {
+            master.StopCoroutine(_drinkCoroutine);
+        }
     }
 
 

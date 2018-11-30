@@ -21,5 +21,5 @@ MonoBehaviour:
   _horizontalOffset: -1.11
   _verticalOffset: 1
   _normalFOV: 50
-  _lockedFOV: 40
+  _lockedFOV: 45
   _fovChangeSpeed: 0.2

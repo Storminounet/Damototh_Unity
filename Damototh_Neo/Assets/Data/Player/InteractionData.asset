@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: InteractionData
   m_EditorClassIdentifier: 
   _detectionDistance: 1
-  _interactionAngle: 90
+  _interactionAngle: 120
   _drinkDistance: 1
   _outsideCombatDrinkTime: 2
   _insideCombatDrinkTime: 4

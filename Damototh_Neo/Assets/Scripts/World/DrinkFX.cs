@@ -110,6 +110,8 @@ public class DrinkFX : MonoBehaviour
     {
         float time = insideCombat == true ? _VData.InsideCombatFXEmittDuration : _VData.OutsideCombatFXEmittDuration;
 
+        _emissionEndTime = WorldData.Time + time;
+
         Destroy(gameObject, time + 5f);
         Invoke("StopEmission", time);
         _target = target;
@@ -129,7 +131,6 @@ public class DrinkFX : MonoBehaviour
 
     private void StopEmission()
     {
-        _emissionEndTime = WorldData.Time;
         ParticleSystem.EmissionModule emission = particleSystem.emission;
         emission.enabled = false;
     }
